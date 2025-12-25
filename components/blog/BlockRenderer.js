@@ -13,7 +13,22 @@ export default function BlockRenderer({ blocks }) {
 
                     case 'heading':
                         const Tag = block.level || 'h2';
-                        return <Tag key={block.id} className="font-bold text-slate-900 mt-8 mb-4">{block.content}</Tag>;
+                        const headingClasses = {
+                            h1: 'text-4xl font-black text-slate-900 mt-10 mb-6',
+                            h2: 'text-3xl font-bold text-slate-900 mt-8 mb-4',
+                            h3: 'text-2xl font-bold text-slate-900 mt-6 mb-3',
+                            h4: 'text-xl font-semibold text-slate-900 mt-5 mb-2',
+                            h5: 'text-lg font-semibold text-slate-800 mt-4 mb-2',
+                            h6: 'text-base font-semibold text-slate-800 mt-3 mb-1'
+                        };
+                        return (
+                            <Tag 
+                                key={block.id} 
+                                className={headingClasses[Tag] || headingClasses.h2}
+                            >
+                                {block.content}
+                            </Tag>
+                        );
 
                     case 'list':
                         const ListTag = block.style === 'ordered' ? 'ol' : 'ul';
@@ -49,6 +64,18 @@ export default function BlockRenderer({ blocks }) {
                                     </figcaption>
                                 )}
                             </figure>
+                        );
+
+                    case 'code':
+                        return (
+                            <pre key={block.id} className="my-6 bg-slate-900 text-green-400 p-4 rounded-lg overflow-x-auto border border-slate-700">
+                                <code className="font-mono text-sm whitespace-pre">{block.content}</code>
+                            </pre>
+                        );
+
+                    case 'separator':
+                        return (
+                            <hr key={block.id} className="my-8 border-t-2 border-slate-300" />
                         );
 
                     default:
