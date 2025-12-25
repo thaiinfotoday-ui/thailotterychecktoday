@@ -80,6 +80,12 @@ export default async function sitemap() {
             changeFrequency: 'monthly',
             priority: 0.6,
         },
+        {
+            url: `${baseUrl}/how-3up-direct-and-set-works`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.6,
+        },
     ];
 
     return [...staticRoutes, ...historyEntries];
