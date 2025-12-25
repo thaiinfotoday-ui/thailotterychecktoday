@@ -1,8 +1,7 @@
 export default function robots() {
     // Use environment variable or fallback
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ||
-        (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` :
-            'https://thailotterychecktoday.com');
+    // Always use the production domain for SEO/Sitemap, unless strictly overridden by NEXT_PUBLIC_SITE_URL
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thailotterychecktoday.com';
 
     return {
         rules: {

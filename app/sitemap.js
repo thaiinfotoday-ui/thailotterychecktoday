@@ -2,9 +2,8 @@ import { getHistoryData } from '@/lib/historyData';
 
 export default async function sitemap() {
     // Use environment variable or fallback to localhost for development
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ||
-        (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` :
-            'https://thailotterychecktoday.com');
+    // Always use the production domain for SEO/Sitemap, unless strictly overridden by NEXT_PUBLIC_SITE_URL
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thailotterychecktoday.com';
 
     // Fetch all history data (pass limit 1000 or similar if needed, or modify getHistoryData to return all)
     // The current getHistoryData supports generic fetch. We'll grab the first page with a large size if possible, 
