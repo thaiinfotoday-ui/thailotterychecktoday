@@ -1,13 +1,21 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { supabase } from '@/lib/supabase';
+import { createServerClient } from '@/lib/supabase';
 
 export async function POST(req) {
     try {
         const { username, password } = await req.json();
 
+        // Validate input
+        if (!username || !password) {
+            return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+        }
+
         // Debug Log (Server Side)
         console.log("Attempting login for:", username);
+
+        // Create a fresh Supabase client for this request (required for server-side auth)
+        const supabase = createServerClient();
 
         // Authenticate with Supabase Auth
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -18,7 +26,9 @@ export async function POST(req) {
         if (error) {
             console.error("Supabase Auth Error:", error.message);
             // Return specific error message to help debug
-            return NextResponse.json({ error: error.message }, { status: 401 });
+            return NextResponse.json({ 
+                error: error.message || 'Invalid email or password' 
+            }, { status: 401 });
         }
 
         if (data.session) {
@@ -27,7 +37,8 @@ export async function POST(req) {
             cookieStore.set('admin_token', data.session.access_token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
-                maxAge: data.session.expires_in,
+                sameSite: 'lax',
+                maxAge: data.session.expires_in || 3600, // Default to 1 hour if not provided
                 path: '/',
             });
 
@@ -37,6 +48,8 @@ export async function POST(req) {
         return NextResponse.json({ error: 'Login succeeded but no session returned' }, { status: 500 });
     } catch (error) {
         console.error("Login Route Error:", error);
-        return NextResponse.json({ error: 'Internal Server Error: ' + error.message }, { status: 500 });
+        return NextResponse.json({ 
+            error: 'Internal Server Error: ' + error.message 
+        }, { status: 500 });
     }
 }

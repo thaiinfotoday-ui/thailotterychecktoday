@@ -27,9 +27,12 @@ export default function LoginPage() {
                 router.push('/admin/blog');
                 router.refresh(); // Refresh to update middleware state
             } else {
-                setError('Invalid username or password');
+                // Try to get error message from response
+                const errorData = await res.json().catch(() => ({}));
+                setError(errorData.error || 'Invalid email or password');
             }
         } catch (err) {
+            console.error('Login error:', err);
             setError('Login failed. Please try again.');
         } finally {
             setLoading(false);
