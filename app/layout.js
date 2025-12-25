@@ -1,10 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import MobileNav from "./components/MobileNav";
 import JsonLd from "./components/JsonLd";
 import { LanguageProvider } from "./context/LanguageContext";
+import ClientLayout from "./components/ClientLayout"; // New component
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -48,12 +46,7 @@ export default function RootLayout({ children }) {
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <JsonLd />
         <LanguageProvider>
-          <Header />
-          <div className="flex-grow pb-16 md:pb-0">
-            {children}
-          </div>
-          <Footer />
-          <MobileNav />
+          <ClientLayout>{children}</ClientLayout>
         </LanguageProvider>
       </body>
     </html>
