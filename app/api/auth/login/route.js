@@ -13,9 +13,22 @@ export async function POST(req) {
 
         // Debug Log (Server Side)
         console.log("Attempting login for:", username);
+        
+        // Check environment variables (for debugging)
+        const hasSupabaseUrl = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const hasSupabaseKey = !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        console.log("Env check - URL:", hasSupabaseUrl, "Key:", hasSupabaseKey);
 
         // Create a fresh Supabase client for this request (required for server-side auth)
-        const supabase = createServerClient();
+        let supabase;
+        try {
+            supabase = createServerClient();
+        } catch (clientError) {
+            console.error("Failed to create Supabase client:", clientError.message);
+            return NextResponse.json({ 
+                error: 'Server configuration error. Please check environment variables.' 
+            }, { status: 500 });
+        }
 
         // Authenticate with Supabase Auth
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -24,10 +37,24 @@ export async function POST(req) {
         });
 
         if (error) {
-            console.error("Supabase Auth Error:", error.message);
-            // Return specific error message to help debug
+            console.error("Supabase Auth Error:", {
+                message: error.message,
+                status: error.status,
+                code: error.code
+            });
+            
+            // Return user-friendly error messages
+            let errorMessage = 'Invalid email or password';
+            if (error.message.includes('Invalid login credentials')) {
+                errorMessage = 'Invalid email or password';
+            } else if (error.message.includes('Email not confirmed')) {
+                errorMessage = 'Please confirm your email address first';
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+            
             return NextResponse.json({ 
-                error: error.message || 'Invalid email or password' 
+                error: errorMessage 
             }, { status: 401 });
         }
 
@@ -42,9 +69,11 @@ export async function POST(req) {
                 path: '/',
             });
 
+            console.log("Login successful for:", username);
             return NextResponse.json({ success: true });
         }
 
+        console.error("Login succeeded but no session returned");
         return NextResponse.json({ error: 'Login succeeded but no session returned' }, { status: 500 });
     } catch (error) {
         console.error("Login Route Error:", error);
