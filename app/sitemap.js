@@ -88,5 +88,22 @@ export default async function sitemap() {
         },
     ];
 
-    return [...staticRoutes, ...historyEntries];
+    // Blog Entries (Fetch from Supabase)
+    let blogEntries = [];
+    try {
+        const { getAllPosts } = await import('@/lib/blogService');
+        const posts = await getAllPosts();
+        blogEntries = posts
+            .filter(p => p.status === 'published')
+            .map(post => ({
+                url: `${baseUrl}/blog/${post.slug}`,
+                lastModified: new Date(post.updated_at || post.created_at),
+                changeFrequency: 'weekly',
+                priority: 0.7,
+            }));
+    } catch (e) {
+        console.error("Sitemap Blog Fetch Error:", e);
+    }
+
+    return [...staticRoutes, ...historyEntries, ...blogEntries];
 }

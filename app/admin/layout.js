@@ -1,7 +1,17 @@
+'use client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { LayoutDashboard, FileText, Settings, LogOut, ExternalLink } from 'lucide-react';
 
 export default function AdminLayout({ children }) {
+    const router = useRouter();
+
+    const handleLogout = async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        router.push('/admin/login');
+        router.refresh(); // Clear client state
+    };
+
     return (
         <div className="min-h-screen bg-slate-100 flex">
             {/* Sidebar */}
@@ -26,7 +36,10 @@ export default function AdminLayout({ children }) {
                     <Link href="/" target="_blank" className="flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-4">
                         <ExternalLink className="w-4 h-4" /> View Site
                     </Link>
-                    <button className="flex items-center gap-2 text-red-400 hover:text-red-300 w-full px-4 py-2 rounded-lg bg-red-900/20 hover:bg-red-900/40 text-sm font-medium transition-colors">
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 text-red-400 hover:text-red-300 w-full px-4 py-2 rounded-lg bg-red-900/20 hover:bg-red-900/40 text-sm font-medium transition-colors"
+                    >
                         <LogOut className="w-4 h-4" /> Logout
                     </button>
                 </div>

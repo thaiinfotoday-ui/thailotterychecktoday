@@ -1,29 +1,39 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-
-// Simple Hardcoded Auth for demonstration
-// In production, move to Environment Variables or DB
-const ADMIN_USER = process.env.ADMIN_USER || 'admin';
-const ADMIN_PASS = process.env.ADMIN_PASS || 'lottery2025';
+import { supabase } from '@/lib/supabase';
 
 export async function POST(req) {
     try {
         const { username, password } = await req.json();
 
-        if (username === ADMIN_USER && password === ADMIN_PASS) {
-            // Set secure cookie
-            cookies().set('admin_token', 'validated_token_12345', {
+        // Authenticate with Supabase Auth
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: username,
+            password: password,
+        });
+
+        if (error) {
+            console.error("Supabase Auth Error:", error.message);
+            return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+        }
+
+        if (data.session) {
+            // Valid login - Set the secure cookie
+            // We use the access_token from Supabase as our 'admin_token'
+            cookies().set('admin_token', data.session.access_token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
-                maxAge: 60 * 60 * 24, // 1 day
+                maxAge: data.session.expires_in, // Uses actual token expiry
                 path: '/',
             });
 
+            // Also set refresh token if needed, but for simple admin this is enough
             return NextResponse.json({ success: true });
         }
 
-        return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-    } catch (error) {
         return NextResponse.json({ error: 'Login failed' }, { status: 500 });
+    } catch (error) {
+        console.error("Login Route Error:", error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

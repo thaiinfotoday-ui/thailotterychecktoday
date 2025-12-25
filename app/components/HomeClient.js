@@ -4,7 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { Calendar, Award, ExternalLink, RefreshCw, ChevronRight, HelpCircle, ShieldCheck, Zap } from 'lucide-react';
 import { HeroIllustration, SecureIllustration, StatsIllustration, WinnerIllustration } from './Illustrations';
 
-export default function HomeClient({ initialData, history }) {
+export default function HomeClient({ initialData, history, latestPosts }) {
     const { t, lang } = useLanguage();
 
     // If initialData failed (passed as null or error from server), usage fallback?
@@ -265,6 +265,51 @@ export default function HomeClient({ initialData, history }) {
                     </table>
                 </div>
             </section>
+
+            {/* 5. LATEST BLOG POSTS */}
+            {/* 5. LATEST BLOG POSTS */}
+            {latestPosts && latestPosts.length > 0 && (
+                <section className="container mx-auto px-4 pt-8">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                            <span className="w-1 h-8 bg-pink-500 rounded-full"></span>
+                            Latest News & Guides
+                        </h2>
+                        <Link href="/blog" className="text-pink-600 font-semibold text-sm hover:underline">
+                            Read Blog
+                        </Link>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {latestPosts.map((post) => (
+                            <Link
+                                key={post.slug}
+                                href={`/blog/${post.slug}`}
+                                className="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all overflow-hidden flex flex-col"
+                            >
+                                <div className="h-32 bg-slate-100 flex items-center justify-center text-slate-300">
+                                    {post.featured_image ? (
+                                        <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <span className="text-2xl">📰</span>
+                                    )}
+                                </div>
+                                <div className="p-5 flex-1 flex flex-col">
+                                    <div className="text-xs text-slate-400 mb-2 font-medium">
+                                        {new Date(post.createdAt || post.published_at).toLocaleDateString()}
+                                    </div>
+                                    <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-pink-600 transition-colors line-clamp-2">
+                                        {post.title}
+                                    </h3>
+                                    <span className="mt-auto text-xs font-bold text-slate-400 uppercase tracking-wide group-hover:text-pink-500 flex items-center gap-1">
+                                        Read More <ChevronRight className="w-3 h-3" />
+                                    </span>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             {/* 6. FAQ SECTION - Accordion Style */}
             <section className="container mx-auto px-4 py-8">
