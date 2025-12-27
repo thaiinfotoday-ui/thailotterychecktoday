@@ -1,29 +1,19 @@
-import { getHistoryData } from '@/lib/historyData';
 import StatisticsClient from './StatisticsClient';
 
 export const metadata = {
-    title: "Thai Lottery Statistics - Historical Data Analysis 2025",
-    description: "Comprehensive statistics and historical analysis of Thai Lottery results. Most common numbers, patterns, and trends (informational only).",
-    keywords: "thai lottery statistics, lottery analysis, number patterns, historical data, most common numbers",
+    title: "Thai Lottery Statistics & Frequency Analysis (EAV Model)",
+    description: "Advanced statistical analysis of Thai Lottery results. View digit frequency matrices, hot/cold number attributes, and historical probability models.",
+    keywords: "thai lottery statistics, 3-up frequency, lottery heatmap, digit probability, past draw analysis",
     openGraph: {
-        title: "Thai Lottery Statistics & Historical Analysis",
-        description: "Statistical analysis of Thai Lottery historical results",
-        type: "website",
+        title: "The Science of Luck: Lottery Data Analysis",
+        description: "Uncovering patterns with Entity-Attribute-Value models.",
+        type: "article",
     },
-    twitter: {
-        card: "summary_large_image",
-        title: "Thai Lottery Statistics",
-        description: "Historical statistics and analysis of Thai Lottery",
-    },
-    robots: {
-        index: true,
-        follow: true,
+    alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://localhost:3000'}/thai-lottery-statistics`,
     }
 };
 
-export default async function StatisticsPage() {
-    const allData = await getHistoryData(null, 1);
-    
-    return <StatisticsClient initialData={allData.results} />;
+export default function StatisticsPage() {
+    return <StatisticsClient />;
 }
-

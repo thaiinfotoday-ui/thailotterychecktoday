@@ -1,8 +1,9 @@
+import { headers } from 'next/headers'; // Import headers
 import { Inter } from "next/font/google";
 import "./globals.css";
 import JsonLd from "./components/JsonLd";
 import { LanguageProvider } from "./context/LanguageContext";
-import ClientLayout from "./components/ClientLayout"; // New component
+import ClientLayout from "./components/ClientLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,17 +38,26 @@ export const metadata = {
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL || 'https://thailotterychecktoday.com',
+    languages: {
+      'th': 'https://thailotterychecktoday.com/th',
+      'en': 'https://thailotterychecktoday.com',
+    }
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  // Read language from headers (set by middleware)
+  const headersList = await headers();
+  const lang = headersList.get('x-next-locale') || 'en';
+
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <JsonLd />
-        <LanguageProvider>
+        <LanguageProvider initialLang={lang}>
           <ClientLayout>{children}</ClientLayout>
         </LanguageProvider>
+        {/* Rebuild Trigger */}
       </body>
     </html>
   );

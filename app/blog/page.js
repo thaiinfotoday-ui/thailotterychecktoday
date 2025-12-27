@@ -15,7 +15,7 @@ export default async function BlogIndexPage() {
         <div className="min-h-screen bg-slate-50 pb-12">
             <section className="bg-white border-b border-slate-200">
                 <div className="container mx-auto px-4 py-16 text-center">
-                    <span className="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+                    <span className="inline-block px-3 py-1 bg-red-100 text-primary rounded-full text-xs font-bold uppercase tracking-wider mb-4">
                         Educational Resources
                     </span>
                     <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
@@ -43,7 +43,7 @@ export default async function BlogIndexPage() {
                                 className="group bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                             >
                                 {/* Placeholder Image handling - in real app, use post.featuredImage */}
-                                <div className="h-48 bg-gradient-to-br from-purple-100 to-indigo-50 flex items-center justify-center text-purple-200">
+                                <div className="h-48 bg-gradient-to-br from-red-100 to-indigo-50 flex items-center justify-center text-red-200">
                                     <span className="text-4xl">📝</span>
                                 </div>
 
@@ -58,13 +58,13 @@ export default async function BlogIndexPage() {
                                             Editor
                                         </span>
                                     </div>
-                                    <h2 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-purple-600 transition-colors line-clamp-2">
+                                    <h2 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary transition-colors line-clamp-2">
                                         {post.title}
                                     </h2>
                                     <p className="text-slate-500 text-sm line-clamp-3 leading-relaxed">
                                         {post.seo?.description || "Read more about this topic..."}
                                     </p>
-                                    <span className="inline-block mt-4 text-sm font-bold text-purple-600">
+                                    <span className="inline-block mt-4 text-sm font-bold text-primary">
                                         Read Article &rarr;
                                     </span>
                                 </div>

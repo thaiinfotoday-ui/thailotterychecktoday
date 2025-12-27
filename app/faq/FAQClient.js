@@ -163,7 +163,7 @@ export default function FAQClient() {
                 <div className="container mx-auto px-4 py-12 text-center">
                     <FAQIllustration className="w-32 h-32 mx-auto mb-6 drop-shadow-md hover:scale-105 transition-transform duration-500" />
                     <div className="flex items-center justify-center gap-3 mb-4">
-                        <HelpCircle className="w-8 h-8 text-purple-600" />
+                        <HelpCircle className="w-8 h-8 text-primary" />
                         <h1 className="text-3xl md:text-4xl font-black text-slate-900">
                             Frequently Asked Questions
                         </h1>
@@ -181,7 +181,7 @@ export default function FAQClient() {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Search for questions..."
-                                className="w-full pl-12 pr-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                                className="w-full pl-12 pr-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-red-500"
                             />
                         </div>
                         {searchQuery && (
@@ -198,21 +198,21 @@ export default function FAQClient() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                     <Link
                         href="/check"
-                        className="p-4 bg-white border border-slate-200 rounded-xl hover:border-purple-300 hover:shadow-md transition-all"
+                        className="p-4 bg-white border border-slate-200 rounded-xl hover:border-red-300 hover:shadow-md transition-all"
                     >
                         <h3 className="font-semibold text-slate-900 mb-1">Check Your Number</h3>
                         <p className="text-sm text-slate-500">Verify if you won</p>
                     </Link>
                     <Link
                         href="/latest"
-                        className="p-4 bg-white border border-slate-200 rounded-xl hover:border-purple-300 hover:shadow-md transition-all"
+                        className="p-4 bg-white border border-slate-200 rounded-xl hover:border-red-300 hover:shadow-md transition-all"
                     >
                         <h3 className="font-semibold text-slate-900 mb-1">Latest Results</h3>
                         <p className="text-sm text-slate-500">View current draw</p>
                     </Link>
                     <Link
                         href="/thai-lottery-draw-dates"
-                        className="p-4 bg-white border border-slate-200 rounded-xl hover:border-purple-300 hover:shadow-md transition-all"
+                        className="p-4 bg-white border border-slate-200 rounded-xl hover:border-red-300 hover:shadow-md transition-all"
                     >
                         <h3 className="font-semibold text-slate-900 mb-1">Draw Schedule</h3>
                         <p className="text-sm text-slate-500">Upcoming dates</p>
@@ -234,7 +234,7 @@ export default function FAQClient() {
                                     <details
                                         key={itemIndex}
                                         open={isOpen}
-                                        className="group bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-purple-300 transition-colors"
+                                        className="group bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-red-300 transition-colors"
                                     >
                                         <summary
                                             className="flex items-center justify-between p-5 cursor-pointer font-semibold text-slate-900 hover:bg-slate-50 select-none"
@@ -266,7 +266,7 @@ export default function FAQClient() {
                         <p className="text-slate-500">No FAQs found matching "{searchQuery}"</p>
                         <button
                             onClick={() => setSearchQuery('')}
-                            className="mt-4 text-purple-600 hover:text-purple-700 font-semibold"
+                            className="mt-4 text-primary hover:text-red-700 font-semibold"
                         >
                             Clear search
                         </button>
@@ -274,7 +274,7 @@ export default function FAQClient() {
                 )}
 
                 {/* Still Have Questions */}
-                <div className="mt-12 p-6 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl">
+                <div className="mt-12 p-6 bg-gradient-to-r from-red-50 to-blue-50 border border-red-200 rounded-xl">
                     <h3 className="text-lg font-bold text-slate-900 mb-2">Still have questions?</h3>
                     <p className="text-slate-600 mb-4">
                         For official information, visit the Government Lottery Office website or contact them directly.
@@ -282,14 +282,14 @@ export default function FAQClient() {
                     <div className="flex flex-wrap gap-4">
                         <Link
                             href="/how-to"
-                            className="text-purple-600 hover:text-purple-700 font-semibold flex items-center gap-1"
+                            className="text-primary hover:text-red-700 font-semibold flex items-center gap-1"
                         >
                             How to Play Guide
                             <ExternalLink className="w-4 h-4" />
                         </Link>
                         <Link
                             href="/thai-lottery-statistics"
-                            className="text-purple-600 hover:text-purple-700 font-semibold flex items-center gap-1"
+                            className="text-primary hover:text-red-700 font-semibold flex items-center gap-1"
                         >
                             View Statistics
                             <ExternalLink className="w-4 h-4" />

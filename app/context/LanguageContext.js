@@ -1,8 +1,5 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
-
-const LanguageContext = createContext();
-
 export const translations = {
     en: {
         title: "Thai Lottery Check Today",
@@ -354,19 +351,27 @@ export const translations = {
     }
 };
 
-export function LanguageProvider({ children }) {
-    // Default to EN, but we could persist in localStorage
-    const [lang, setLang] = useState('en');
+const LanguageContext = createContext({
+    lang: 'en',
+    setLang: () => { },
+    toggleLanguage: () => { },
+    t: translations['en']
+});
 
-    // Load from localStorage or detect browser language
+export function LanguageProvider({ children, initialLang = 'en' }) {
+    // Initialize with server-provided language (for SSR/SEO) or default to 'en'
+    const [lang, setLang] = useState(initialLang);
+
+    // Load from localStorage (client-side override)
     useEffect(() => {
         const saved = localStorage.getItem('preference_lang');
         if (saved) {
             setLang(saved);
-        } else if (typeof navigator !== 'undefined' && navigator.language && navigator.language.startsWith('th')) {
+        } else if (initialLang === 'en' && typeof navigator !== 'undefined' && navigator.language && navigator.language.startsWith('th')) {
+            // Only auto-detect if server didn't force a specific language (like /th route)
             setLang('th');
         }
-    }, []);
+    }, [initialLang]);
 
     // Persist to localStorage
     useEffect(() => {

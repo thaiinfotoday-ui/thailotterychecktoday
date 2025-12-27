@@ -54,7 +54,7 @@ export default function BlogDashboard() {
                 </div>
                 <Link
                     href="/admin/blog/new"
-                    className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 font-medium transition-colors"
+                    className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-red-700 font-medium transition-colors"
                 >
                     <Plus className="w-4 h-4" /> Create New Post
                 </Link>
@@ -69,7 +69,7 @@ export default function BlogDashboard() {
                         placeholder="Search posts..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-slate-900"
+                        className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary outline-none text-slate-900"
                     />
                 </div>
             </div>
@@ -126,7 +126,7 @@ export default function BlogDashboard() {
                                             </Link>
                                             <Link
                                                 href={`/admin/blog/edit/${post.slug}`}
-                                                className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                                                className="p-2 text-slate-400 hover:text-primary hover:bg-red-50 rounded-lg transition-colors"
                                                 title="Edit"
                                             >
                                                 <Edit className="w-4 h-4" />

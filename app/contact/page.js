@@ -19,7 +19,7 @@ export default function ContactPage() {
                 <div className="space-y-4">
                     <div className="flex items-start gap-4">
                         <div className="min-w-[100px] font-bold text-slate-700">Email:</div>
-                        <div className="text-purple-600 font-medium">contact@thailotterychecktoday.com</div>
+                        <div className="text-primary font-medium">contact@thailotterychecktoday.com</div>
                     </div>
                     <div className="flex items-start gap-4">
                         <div className="min-w-[100px] font-bold text-slate-700">Response:</div>

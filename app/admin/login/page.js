@@ -43,7 +43,7 @@ export default function LoginPage() {
         <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
                 <div className="p-8 text-center bg-slate-50 border-b border-slate-100">
-                    <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 text-purple-600">
+                    <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-primary">
                         <Lock className="w-8 h-8" />
                     </div>
                     <h1 className="text-2xl font-bold text-slate-900">Admin Login</h1>
@@ -67,7 +67,7 @@ export default function LoginPage() {
                                     type="email"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all"
+                                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-red-500 outline-none transition-all"
                                     placeholder="your-email@example.com"
                                     required
                                 />
@@ -82,7 +82,7 @@ export default function LoginPage() {
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all"
+                                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-red-500 outline-none transition-all"
                                     placeholder="••••••••"
                                     required
                                 />
@@ -92,7 +92,7 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-purple-600 text-white font-bold py-3 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                             {loading ? 'Authenticating...' : <><span className="mt-0.5">Sign In</span> <ArrowRight className="w-4 h-4" /></>}
                         </button>

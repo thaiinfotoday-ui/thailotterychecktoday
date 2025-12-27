@@ -73,7 +73,7 @@ export default function ThreeUpClient() {
                 {/* Section 1: What is 3UP Direct */}
                 <section className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <span className="w-8 h-8 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center text-sm font-bold">1</span>
+                        <span className="w-8 h-8 bg-red-100 text-primary rounded-lg flex items-center justify-center text-sm font-bold">1</span>
                         What is "3UP Direct"?
                     </h2>
                     <p className="text-slate-600 leading-relaxed mb-4">
@@ -101,7 +101,7 @@ export default function ThreeUpClient() {
                 {/* Section 2: What is 3UP Set */}
                 <section className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                        <span className="w-8 h-8 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center text-sm font-bold">2</span>
+                        <span className="w-8 h-8 bg-red-100 text-primary rounded-lg flex items-center justify-center text-sm font-bold">2</span>
                         What is "3UP Set"?
                     </h2>
                     <p className="text-slate-600 leading-relaxed mb-4">
@@ -200,24 +200,24 @@ export default function ThreeUpClient() {
                             <thead>
                                 <tr className="bg-white border-b border-slate-100">
                                     <th className="px-6 py-4 font-bold text-slate-700 w-1/3">Feature</th>
-                                    <th className="px-6 py-4 font-bold text-purple-700 w-1/3 bg-purple-50/50">3UP Direct</th>
+                                    <th className="px-6 py-4 font-bold text-primary w-1/3 bg-red-50/50">3UP Direct</th>
                                     <th className="px-6 py-4 font-bold text-blue-700 w-1/3 bg-blue-50/50">3UP Set</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
                                 <tr>
                                     <td className="px-6 py-4 font-medium text-slate-600">Definition</td>
-                                    <td className="px-6 py-4 text-slate-600 bg-purple-50/30">Exact digits, exact order</td>
+                                    <td className="px-6 py-4 text-slate-600 bg-red-50/30">Exact digits, exact order</td>
                                     <td className="px-6 py-4 text-slate-600 bg-blue-50/30">Same digits, any order</td>
                                 </tr>
                                 <tr>
                                     <td className="px-6 py-4 font-medium text-slate-600">Matching Criteria</td>
-                                    <td className="px-6 py-4 text-slate-600 bg-purple-50/30">Strict</td>
+                                    <td className="px-6 py-4 text-slate-600 bg-red-50/30">Strict</td>
                                     <td className="px-6 py-4 text-slate-600 bg-blue-50/30">Flexible</td>
                                 </tr>
                                 <tr>
                                     <td className="px-6 py-4 font-medium text-slate-600">Example (Ref: 123)</td>
-                                    <td className="px-6 py-4 text-slate-600 bg-purple-50/30">123 only</td>
+                                    <td className="px-6 py-4 text-slate-600 bg-red-50/30">123 only</td>
                                     <td className="px-6 py-4 text-slate-600 bg-blue-50/30">123, 132, 213, 231, 312, 321</td>
                                 </tr>
                             </tbody>

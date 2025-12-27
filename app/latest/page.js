@@ -1,5 +1,6 @@
 import { getLotteryData } from '@/lib/lotteryService';
 import LatestClient from './LatestClient';
+import LotterySchema from '@/app/components/LotterySchema'; // Import Schema
 
 export const metadata = {
     title: "Latest Thai Lottery Result - Live Draw Update",
@@ -37,5 +38,10 @@ export default async function LatestDrawPage() {
         error = "Unable to fetch live results. Please try again later.";
     }
 
-    return <LatestClient data={data} error={error} />;
+    return (
+        <>
+            {data && <LotterySchema data={data} />}
+            <LatestClient data={data} error={error} />
+        </>
+    );
 }

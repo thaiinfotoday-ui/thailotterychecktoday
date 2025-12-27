@@ -27,7 +27,7 @@ export default function MobileNav() {
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${isActive ? 'text-purple-600' : 'text-slate-400 hover:text-slate-600'
+                            className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${isActive ? 'text-primary' : 'text-slate-400 hover:text-slate-600'
                                 }`}
                         >
                             <item.icon className={`w-6 h-6 ${isActive ? 'fill-current' : ''}`} strokeWidth={isActive ? 2.5 : 2} />

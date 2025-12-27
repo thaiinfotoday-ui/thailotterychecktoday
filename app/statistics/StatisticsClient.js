@@ -74,7 +74,7 @@ export default function StatisticsClient({ initialData }) {
 
     const StatCard = ({ title, icon: Icon, children, color = 'purple' }) => {
         const colors = {
-            purple: 'from-purple-500 to-pink-500',
+            purple: 'from-primary to-secondary',
             blue: 'from-blue-500 to-cyan-500',
             green: 'from-green-500 to-emerald-500',
         };
@@ -105,7 +105,7 @@ export default function StatisticsClient({ initialData }) {
                         <span className="font-mono font-bold text-slate-900 w-16">{item.number}</span>
                         <div className="flex-1 bg-slate-100 rounded-full h-2.5">
                             <div
-                                className="bg-gradient-to-r from-purple-500 to-pink-500 h-2.5 rounded-full"
+                                className="bg-gradient-to-r from-primary to-secondary h-2.5 rounded-full"
                                 style={{ width: `${barWidth}%` }}
                             />
                         </div>
@@ -128,7 +128,7 @@ export default function StatisticsClient({ initialData }) {
                 <div className="container mx-auto px-4 py-12 text-center">
                     <AnalyticsIllustration className="w-32 h-32 mx-auto mb-6 drop-shadow-md hover:scale-105 transition-transform duration-500" />
                     <div className="flex items-center justify-center gap-3 mb-4">
-                        <BarChart3 className="w-8 h-8 text-purple-600" />
+                        <BarChart3 className="w-8 h-8 text-primary" />
                         <h1 className="text-3xl md:text-4xl font-black text-slate-900">
                             Thai Lottery Statistics
                         </h1>
@@ -193,7 +193,7 @@ export default function StatisticsClient({ initialData }) {
                 {/* First Prize Analysis */}
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-8">
                     <div className="flex items-center gap-3 mb-6">
-                        <Award className="w-6 h-6 text-purple-600" />
+                        <Award className="w-6 h-6 text-primary" />
                         <h2 className="text-xl font-bold text-slate-900">First Prize Analysis</h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -222,7 +222,7 @@ export default function StatisticsClient({ initialData }) {
                             return (
                                 <div
                                     key={year}
-                                    className="px-4 py-2 bg-purple-50 border border-purple-200 rounded-lg"
+                                    className="px-4 py-2 bg-red-50 border border-red-200 rounded-lg"
                                 >
                                     <span className="font-semibold text-slate-900">{year}</span>
                                     <span className="text-slate-500 text-sm ml-2">
@@ -260,7 +260,7 @@ export default function StatisticsClient({ initialData }) {
                     <h2 className="text-2xl font-bold text-slate-900 mb-6">{t.statsContent?.title}</h2>
                     <p className="text-slate-600 leading-relaxed mb-8">
                         {t.statsContent?.intro.split('**').map((part, index) =>
-                            index % 2 === 1 ? <strong key={index} className="text-purple-700">{part}</strong> : part
+                            index % 2 === 1 ? <strong key={index} className="text-primary">{part}</strong> : part
                         )}
                     </p>
 

@@ -48,7 +48,7 @@ export default function NotFound() {
                     <div className="text-center mb-16 relative">
                         {/* Background Decor */}
                         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-100/30 blur-[120px] rounded-full"></div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-100/30 blur-[120px] rounded-full"></div>
                         </div>
 
                         <div className="relative z-10 space-y-6">
@@ -58,7 +58,7 @@ export default function NotFound() {
                                     404
                                 </h1>
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                                    <FileQuestion className="w-32 h-32 text-purple-200/50" />
+                                    <FileQuestion className="w-32 h-32 text-red-200/50" />
                                 </div>
                             </div>
 
@@ -79,7 +79,7 @@ export default function NotFound() {
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
                                 <Link
                                     href="/"
-                                    className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-purple-800 transition-all w-full sm:w-auto justify-center shadow-lg shadow-purple-200 hover:shadow-xl hover:shadow-purple-300 transform hover:-translate-y-0.5"
+                                    className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl hover:from-red-700 hover:to-blue-800 transition-all w-full sm:w-auto justify-center shadow-lg shadow-red-200 hover:shadow-xl hover:shadow-red-300 transform hover:-translate-y-0.5"
                                 >
                                     <Home className="w-5 h-5" />
                                     {t.notFound.homeBtn}
@@ -88,7 +88,7 @@ export default function NotFound() {
 
                                 <Link
                                     href="/latest"
-                                    className="flex items-center gap-2 px-8 py-4 bg-white border-2 border-purple-200 text-slate-700 font-semibold rounded-xl hover:bg-purple-50 hover:border-purple-300 transition-all w-full sm:w-auto justify-center shadow-sm hover:shadow-md"
+                                    className="flex items-center gap-2 px-8 py-4 bg-white border-2 border-red-200 text-slate-700 font-semibold rounded-xl hover:bg-red-50 hover:border-red-300 transition-all w-full sm:w-auto justify-center shadow-sm hover:shadow-md"
                                 >
                                     <Search className="w-5 h-5" />
                                     {t.notFound.checkBtn}
@@ -109,21 +109,21 @@ export default function NotFound() {
                                     <Link
                                         key={index}
                                         href={link.href}
-                                        className="group p-6 bg-white border border-slate-200 rounded-xl hover:border-purple-300 hover:shadow-lg transition-all hover:-translate-y-1"
+                                        className="group p-6 bg-white border border-slate-200 rounded-xl hover:border-red-300 hover:shadow-lg transition-all hover:-translate-y-1"
                                     >
                                         <div className="flex items-start gap-4">
-                                            <div className="p-3 bg-purple-100 group-hover:bg-purple-200 rounded-lg transition-colors">
-                                                <Icon className="w-6 h-6 text-purple-600" />
+                                            <div className="p-3 bg-red-100 group-hover:bg-red-200 rounded-lg transition-colors">
+                                                <Icon className="w-6 h-6 text-primary" />
                                             </div>
                                             <div className="flex-1">
-                                                <h4 className="font-semibold text-slate-900 mb-1 group-hover:text-purple-600 transition-colors">
+                                                <h4 className="font-semibold text-slate-900 mb-1 group-hover:text-primary transition-colors">
                                                     {link.title}
                                                 </h4>
                                                 <p className="text-sm text-slate-500">
                                                     {link.desc}
                                                 </p>
                                             </div>
-                                            <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-purple-600 group-hover:translate-x-1 transition-all" />
+                                            <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-primary group-hover:translate-x-1 transition-all" />
                                         </div>
                                     </Link>
                                 );
@@ -132,20 +132,20 @@ export default function NotFound() {
                     </div>
 
                     {/* Help Section */}
-                    <div className="mt-16 p-8 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl border border-purple-100">
+                    <div className="mt-16 p-8 bg-gradient-to-r from-red-50 to-blue-50 rounded-2xl border border-red-100">
                         <div className="text-center space-y-4">
-                            <HelpCircle className="w-12 h-12 text-purple-600 mx-auto" />
+                            <HelpCircle className="w-12 h-12 text-primary mx-auto" />
                             <h3 className="text-xl font-bold text-slate-900">
                                 Need Help?
                             </h3>
                             <p className="text-slate-600 max-w-2xl mx-auto">
-                                If you believe this is an error, please check the URL or try navigating from our homepage. 
+                                If you believe this is an error, please check the URL or try navigating from our homepage.
                                 You can also browse our history section to find past lottery results.
                             </p>
                             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
                                 <Link
                                     href="/history"
-                                    className="text-purple-600 hover:text-purple-700 font-semibold flex items-center gap-1"
+                                    className="text-primary hover:text-red-700 font-semibold flex items-center gap-1"
                                 >
                                     <History className="w-4 h-4" />
                                     View History
@@ -153,7 +153,7 @@ export default function NotFound() {
                                 <span className="text-slate-300">•</span>
                                 <Link
                                     href="/how-to"
-                                    className="text-purple-600 hover:text-purple-700 font-semibold flex items-center gap-1"
+                                    className="text-primary hover:text-red-700 font-semibold flex items-center gap-1"
                                 >
                                     <HelpCircle className="w-4 h-4" />
                                     How to Use

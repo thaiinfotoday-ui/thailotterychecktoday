@@ -29,7 +29,7 @@ export default async function BlogPostPage({ params }) {
             {/* Header / Hero */}
             <div className="bg-slate-50 border-b border-slate-200">
                 <div className="container mx-auto px-4 pt-12 pb-16 max-w-4xl">
-                    <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-purple-600 mb-8 transition-colors">
+                    <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-primary mb-8 transition-colors">
                         <ArrowLeft className="w-4 h-4" /> Back to Blog
                     </Link>
 
@@ -39,7 +39,7 @@ export default async function BlogPostPage({ params }) {
 
                     <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500">
                         <div className="flex items-center gap-2">
-                            <span className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
+                            <span className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-primary font-bold">
                                 E
                             </span>
                             <span>By Editor</span>

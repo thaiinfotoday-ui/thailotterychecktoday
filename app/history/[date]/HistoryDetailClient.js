@@ -17,7 +17,7 @@ export default function HistoryDetailClient({ data }) {
                 <div className="container mx-auto px-4 py-8 md:py-12">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                         <div>
-                            <p className="text-purple-600 font-bold tracking-wider text-sm uppercase mb-2 flex items-center gap-2">
+                            <p className="text-primary font-bold tracking-wider text-sm uppercase mb-2 flex items-center gap-2">
                                 <CheckCircle className="w-4 h-4" /> {t.historyDetail.verified}
                             </p>
                             {/* H1 SEO: Clear, descriptive, date-focused */}
@@ -40,9 +40,9 @@ export default function HistoryDetailClient({ data }) {
                 {/* 2. MAIN RESULTS CARD */}
                 <div className="max-w-4xl mx-auto space-y-8">
 
-                    <div className="bg-white rounded-3xl overflow-hidden shadow-lg shadow-purple-900/5 border border-purple-100">
+                    <div className="bg-white rounded-3xl overflow-hidden shadow-lg shadow-red-900/5 border border-red-100">
                         {/* Gradient Top */}
-                        <div className="h-2 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+                        <div className="h-2 bg-gradient-to-r from-primary to-secondary"></div>
 
                         <div className="p-8 md:p-12 text-center">
 
@@ -94,9 +94,9 @@ export default function HistoryDetailClient({ data }) {
                                 </div>
 
                                 {/* Last 2 Digits Highlight */}
-                                <div className="flex flex-col justify-center items-center bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border border-purple-100 p-8">
-                                    <h3 className="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2">{t.historyDetail.last2}</h3>
-                                    <div className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 font-mono">
+                                <div className="flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-blue-50 rounded-2xl border border-red-100 p-8">
+                                    <h3 className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">{t.historyDetail.last2}</h3>
+                                    <div className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary font-mono">
                                         {data.last2}
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@ export default function HistoryDetailClient({ data }) {
                     {/* 3. PRIZE BREAKDOWN (Text-based SEO Content) */}
                     <section className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
                         <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-                            <Award className="w-5 h-5 text-purple-500" />
+                            <Award className="w-5 h-5 text-primary" />
                             {t.historyDetail.breakdownTitle}
                         </h2>
                         <div className="prose prose-slate max-w-none">
@@ -137,14 +137,14 @@ export default function HistoryDetailClient({ data }) {
                     {/* 4. NAVIGATION SECTION */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Note: In a real app, links would be dynamic based on date */}
-                        <Link href="/history" className="p-4 border border-slate-200 rounded-xl bg-white hover:border-purple-300 hover:shadow-md transition-all group">
-                            <div className="text-xs text-slate-400 mb-1 group-hover:text-purple-600 flex items-center gap-1">
+                        <Link href="/history" className="p-4 border border-slate-200 rounded-xl bg-white hover:border-red-300 hover:shadow-md transition-all group">
+                            <div className="text-xs text-slate-400 mb-1 group-hover:text-primary flex items-center gap-1">
                                 <ChevronLeft className="w-3 h-3" /> {t.historyDetail.prevDraw}
                             </div>
                             <div className="font-bold text-slate-700">{t.historyDetail.exploreOld}</div>
                         </Link>
-                        <Link href="/history" className="p-4 border border-slate-200 rounded-xl bg-white hover:border-purple-300 hover:shadow-md transition-all group text-right">
-                            <div className="text-xs text-slate-400 mb-1 group-hover:text-purple-600 flex items-center justify-end gap-1">
+                        <Link href="/history" className="p-4 border border-slate-200 rounded-xl bg-white hover:border-red-300 hover:shadow-md transition-all group text-right">
+                            <div className="text-xs text-slate-400 mb-1 group-hover:text-primary flex items-center justify-end gap-1">
                                 {t.historyDetail.nextDraw} <ChevronRight className="w-3 h-3" />
                             </div>
                             <div className="font-bold text-slate-700">{t.historyDetail.checkNew}</div>
@@ -154,7 +154,7 @@ export default function HistoryDetailClient({ data }) {
                     {/* 6. FAQ SECTION (Contextual) */}
                     <section className="space-y-6 pt-8">
                         <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                            <FileText className="w-5 h-5 text-purple-500" />
+                            <FileText className="w-5 h-5 text-primary" />
                             {t.historyDetail.faqTitle}
                         </h2>
 

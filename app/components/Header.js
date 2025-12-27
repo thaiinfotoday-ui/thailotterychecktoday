@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Menu, X, Globe } from 'lucide-react';
+import Image from 'next/image';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Header() {
@@ -15,10 +16,16 @@ export default function Header() {
                 {/* Left: Logo */}
                 <div className="flex items-center gap-2">
                     <Link href="/" className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold shadow-sm">
-                            TL
+                        <div className="relative w-10 h-10">
+                            <Image
+                                src="/logo.jpg"
+                                alt="Thai Lottery Check"
+                                fill
+                                className="object-contain"
+                                priority
+                            />
                         </div>
-                        <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600 hidden sm:block">
+                        <span className="text-xl font-bold text-primary hidden sm:block">
                             {t.title}
                         </span>
                     </Link>
@@ -26,17 +33,20 @@ export default function Header() {
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8">
-                    <Link href="/" className="text-sm font-medium text-slate-900 hover:text-purple-600 transition-colors">
+                    <Link href="/" className="text-sm font-medium text-slate-900 hover:text-primary transition-colors">
                         {t.nav.today}
                     </Link>
-                    <Link href="/latest" className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors">
+                    <Link href="/latest" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                         {t.nav.latest}
                     </Link>
-                    <Link href="/history" className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors">
+                    <Link href="/history" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                         {t.nav.history}
                     </Link>
-                    <Link href="/check" className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors">
+                    <Link href="/check" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                         {t.nav.check}
+                    </Link>
+                    <Link href="/tips" className="text-sm font-bold text-primary hover:text-red-700 transition-colors bg-red-50 px-3 py-1 rounded-full">
+                        VIP Tips
                     </Link>
                 </nav>
 
@@ -68,7 +78,7 @@ export default function Header() {
                     <div className="container mx-auto px-4 py-4 flex flex-col gap-4 shadow-xl">
                         <Link
                             href="/"
-                            className="text-purple-700 font-semibold py-2 px-4 bg-purple-50 rounded-lg border border-purple-100"
+                            className="text-primary font-semibold py-2 px-4 bg-red-50 rounded-lg border border-red-100"
                             onClick={() => setIsOpen(false)}
                         >
                             {t.nav.today}

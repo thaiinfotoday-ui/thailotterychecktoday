@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
@@ -27,30 +28,31 @@ export default function Footer() {
                     <div className="space-y-4">
                         <h3 className="text-slate-900 text-lg font-bold">{t.footer.quickLinks}</h3>
                         <ul className="space-y-2">
-                            <li>
-                                <a href="/" className="text-sm hover:text-purple-600 transition-colors flex items-center gap-2 font-medium">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-                                    {t.nav.today}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/history" className="text-sm hover:text-purple-600 transition-colors flex items-center gap-2 group">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400 group-hover:bg-purple-500 transition-colors"></span>
-                                    {t.footer.archive}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/statistics" className="text-sm hover:text-purple-600 transition-colors flex items-center gap-2 group">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400 group-hover:bg-purple-500 transition-colors"></span>
-                                    {t.footer.stats}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/faq" className="text-sm hover:text-purple-600 transition-colors flex items-center gap-2 group">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400 group-hover:bg-purple-500 transition-colors"></span>
-                                    {t.footer.howTo}
-                                </a>
-                            </li>
+                            {[
+                                { href: "/about", label: "About Us" },
+                                { href: "/", label: t.nav.today },
+                                { href: "/history", label: t.footer.archive },
+                                { href: "/thai-lottery-statistics", label: t.footer.stats },
+                                { href: "/tips", label: "VIP Tips & Papers" },
+                                { href: "/live", label: "Live Watch" },
+                                { href: "/knowledge", label: "Wiki & Glossary" },
+                                { href: "/zodiac", label: "Zodiac Signs" },
+                                { href: "/sources", label: "Source Comparison" },
+                                { href: "/thai-lottery-statistics", label: "Statistical Analysis" },
+                                { href: "/win-rate", label: "Win Rate Calculator" },
+                                { href: "/reality", label: "Myths & Reality" },
+                                { href: "/schedules", label: "Draw Schedule" },
+                                { href: "/actions", label: "Action Guide" },
+                                { href: "/lexicon", label: "Phrase Taxonomies" },
+                                { href: "/how-to", label: t.footer.howTo },
+                            ].map((link, i) => (
+                                <li key={i}>
+                                    <Link href={link.href} className="text-sm text-slate-500 hover:text-primary transition-colors flex items-center gap-2 group font-medium">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-slate-200 group-hover:bg-primary transition-colors"></div>
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
@@ -58,12 +60,20 @@ export default function Footer() {
                     <div className="space-y-4">
                         <h3 className="text-slate-900 text-lg font-bold">{t.footer.legal}</h3>
                         <ul className="space-y-2 text-sm">
-                            <li><a href="/privacy" className="hover:text-purple-600 transition-colors">{t.footer.privacy}</a></li>
-                            <li><a href="/terms" className="hover:text-purple-600 transition-colors">{t.footer.terms}</a></li>
-                            <li><a href="/contact" className="hover:text-purple-600 transition-colors">{t.footer.contact}</a></li>
+                            {[
+                                { href: "/privacy", label: t.footer.privacy },
+                                { href: "/terms", label: t.footer.terms },
+                                { href: "/contact", label: t.footer.contact },
+                            ].map((link, i) => (
+                                <li key={i}>
+                                    <Link href={link.href} className="text-slate-500 hover:text-primary transition-colors hover:underline">
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                         <div className="pt-4 border-t border-slate-100">
-                            <p className="text-xs text-slate-400">
+                            <p className="text-xs text-slate-400 leading-relaxed">
                                 {t.footer.attribution}
                             </p>
                         </div>
