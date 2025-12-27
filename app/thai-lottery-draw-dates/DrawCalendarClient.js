@@ -3,7 +3,6 @@
 // ... (imports remain)
 import { Calendar, Clock, Info, AlertCircle, CalendarDays } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { CalendarIllustration } from '../components/Illustrations2';
 import ArticleSchema from '../components/schema/ArticleSchema';
 
 export default function DrawCalendarClient() {
@@ -71,7 +70,7 @@ export default function DrawCalendarClient() {
                         Official GLO Calendar
                     </div>
 
-                    <CalendarIllustration className="w-32 h-32 mx-auto mb-6 drop-shadow-md hover:scale-105 transition-transform duration-500" />
+
                     <div className="flex items-center justify-center gap-3 mb-4">
                         <Calendar className="w-8 h-8 text-primary" />
                         <h1 className="text-3xl md:text-4xl font-black text-slate-900">

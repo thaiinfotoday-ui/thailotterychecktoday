@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { HelpCircle, ChevronDown, Search, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import Link from 'next/link';
-import { FAQIllustration } from '../components/Illustrations2';
 
 export default function FAQClient() {
     const { t } = useLanguage();
@@ -161,7 +160,7 @@ export default function FAQClient() {
             {/* Header */}
             <section className="bg-white border-b border-slate-200">
                 <div className="container mx-auto px-4 py-12 text-center">
-                    <FAQIllustration className="w-32 h-32 mx-auto mb-6 drop-shadow-md hover:scale-105 transition-transform duration-500" />
+
                     <div className="flex items-center justify-center gap-3 mb-4">
                         <HelpCircle className="w-8 h-8 text-primary" />
                         <h1 className="text-3xl md:text-4xl font-black text-slate-900">

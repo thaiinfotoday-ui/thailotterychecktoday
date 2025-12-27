@@ -3,7 +3,6 @@
 import { useMemo } from 'react';
 import { BarChart3, TrendingUp, Award, Info, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { AnalyticsIllustration } from '../components/Illustrations2';
 
 export default function StatisticsClient({ initialData }) {
     const { t } = useLanguage();
