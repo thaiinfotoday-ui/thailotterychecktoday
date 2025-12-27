@@ -18,7 +18,10 @@ export const metadata = {
     robots: {
         index: true,
         follow: true,
-    }
+    },
+    alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://thailotterychecktoday.com'}/number-frequency`,
+    },
 };
 
 // ISR: Cache for 5 minutes  

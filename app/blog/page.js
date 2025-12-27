@@ -5,6 +5,9 @@ import { Calendar, User } from 'lucide-react';
 export const metadata = {
     title: "Thai Lottery Blog - Educational News & Guides",
     description: "Read our latest educational guides and informational updates about Thai Government Lottery.",
+    alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://thailotterychecktoday.com'}/blog`,
+    },
 };
 
 // Cache blog listing for 5 minutes

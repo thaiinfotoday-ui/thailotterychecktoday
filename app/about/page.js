@@ -10,7 +10,7 @@ export const metadata = {
         type: "profile",
     },
     alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://localhost:3000'}/about`,
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://thailotterychecktoday.com'}/about`,
     }
 };
 

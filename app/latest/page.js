@@ -21,7 +21,7 @@ export const metadata = {
         follow: true,
     },
     alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://localhost:3000'}/latest`,
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://thailotterychecktoday.com'}/latest`,
     },
 };
 

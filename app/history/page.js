@@ -19,6 +19,9 @@ export const metadata = {
         index: true,
         follow: true,
     },
+    alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://thailotterychecktoday.com'}/history`,
+    },
 };
 
 // ISR: Cache for 5 minutes

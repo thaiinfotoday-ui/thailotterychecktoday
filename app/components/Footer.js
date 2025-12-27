@@ -41,7 +41,7 @@ export default function Footer() {
                                 { href: "/thai-lottery-statistics", label: "Statistical Analysis" },
                                 { href: "/win-rate", label: "Win Rate Calculator" },
                                 { href: "/reality", label: "Myths & Reality" },
-                                { href: "/schedules", label: "Draw Schedule" },
+                                { href: "/thai-lottery-draw-dates", label: "Draw Schedule" },
                                 { href: "/actions", label: "Action Guide" },
                                 { href: "/lexicon", label: "Phrase Taxonomies" },
                                 { href: "/how-to", label: t.footer.howTo },

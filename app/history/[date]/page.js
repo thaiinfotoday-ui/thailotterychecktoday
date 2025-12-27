@@ -24,9 +24,13 @@ async function getDrawByDate(date) {
 // --- SEO METADATA ---
 export async function generateMetadata({ params }) {
     const { date } = await params;
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thailotterychecktoday.com';
     return {
         title: `Thai Lottery Results ${date} - Winning Numbers`,
         description: `Official Thai Lottery winning numbers for the draw on ${date}. Check First Prize, Last 2 Digits, and full prize breakdown safely.`,
+        alternates: {
+            canonical: `${baseUrl}/history/${date}`,
+        },
     };
 }
 

@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/schedules",
+      "destination": "/thai-lottery-draw-dates",
+      "permanent": true
+    }
+  ],
   "crons": [
     {
       "path": "/api/cron/refresh-data",
