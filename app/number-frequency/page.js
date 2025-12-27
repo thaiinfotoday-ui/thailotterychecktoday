@@ -21,10 +21,13 @@ export const metadata = {
     }
 };
 
+// ISR: Cache for 5 minutes  
+export const revalidate = 300;
+
 export default async function NumberFrequencyPage() {
     // Get all history data for analysis
     const allData = await getHistoryData(null, 1);
-    
+
     return <NumberFrequencyClient initialData={allData.results} />;
 }
 

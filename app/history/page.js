@@ -21,6 +21,9 @@ export const metadata = {
     },
 };
 
+// ISR: Cache for 5 minutes
+export const revalidate = 300;
+
 export default async function HistoryPage({ searchParams }) {
     // Await searchParams before using its properties
     const params = await searchParams;

@@ -25,7 +25,8 @@ export const metadata = {
     },
 };
 
-export const dynamic = 'force-dynamic';
+// ISR: Revalidate every 60 seconds (fresh on draw days)
+export const revalidate = 60;
 
 export default async function LatestDrawPage() {
     let data = null;
