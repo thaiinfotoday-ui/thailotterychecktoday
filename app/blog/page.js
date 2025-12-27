@@ -7,9 +7,12 @@ export const metadata = {
     description: "Read our latest educational guides and informational updates about Thai Government Lottery.",
 };
 
+// Cache blog listing for 5 minutes
+export const revalidate = 300;
+
 export default async function BlogIndexPage() {
-    const posts = await getAllPosts();
-    const publishedPosts = posts.filter(p => p.status === 'published');
+    // getAllPosts already filters for published only and limits to 50
+    const publishedPosts = await getAllPosts();
 
     return (
         <div className="min-h-screen bg-slate-50 pb-12">
