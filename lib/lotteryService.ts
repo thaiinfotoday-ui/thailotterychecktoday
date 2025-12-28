@@ -235,7 +235,7 @@ import { STATIC_FALLBACK_DATA } from './staticResult';
  * GUARANTEE: Never throws an error. Always returns valid data.
  */
 export async function getLotteryData(forceRefresh = false) {
-    const COMPONENT_TIMEOUT = 4000; // Max time before giving up on live data
+    const COMPONENT_TIMEOUT = 5000; // Max time before giving up on live data
 
     try {
         // Enforce a hard timeout on the entire operation
