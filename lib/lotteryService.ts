@@ -171,13 +171,12 @@ async function fetchFromSource(source, retryCount = 0) {
 
         const rawData = parserFunc($);
 
-        // Debug: Log if parsing found partial data
-        if (!rawData.firstPrize) {
-            console.warn(`[${source.name}] Parsing failed or incomplete:`, JSON.stringify(rawData));
-        }
-
         // Basic validation
         if (!rawData.firstPrize || !rawData.lastTwo) {
+            // Only log parsing failures in development, not during build/production
+            if (process.env.NODE_ENV === 'development') {
+                console.warn(`[${source.name}] Parsing failed or incomplete:`, JSON.stringify(rawData));
+            }
             throw new Error('Incomplete data');
         }
 
