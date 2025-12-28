@@ -1,5 +1,8 @@
 import DrawCalendarClient from './DrawCalendarClient';
 
+// ISR: Regenerate page every 24 hours (draw dates are static)
+export const revalidate = 86400;
+
 export const metadata = {
     title: "Thai Lottery Draw Dates & Schedule 2025 - Official Calendar",
     description: "Complete schedule of Thai Government Lottery draw dates for 2025. Know when results are announced (1st and 16th of each month).",

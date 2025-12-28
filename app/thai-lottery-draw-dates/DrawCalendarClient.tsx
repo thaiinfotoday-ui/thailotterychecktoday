@@ -1,7 +1,6 @@
 'use client';
 
-// ... (imports remain)
-import { Calendar, Clock, Info, AlertCircle, CalendarDays } from 'lucide-react';
+import { Calendar, Clock, Info, CalendarDays } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import ArticleSchema from '../components/schema/ArticleSchema';
 
