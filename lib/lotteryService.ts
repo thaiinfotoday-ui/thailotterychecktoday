@@ -28,8 +28,23 @@ const RETRY_DELAY_MS = 1000;
 
 // --- UTILITY FUNCTIONS ---
 
+// Rate-limited error logging to reduce noise
+let lastErrorLogTime = 0;
+const ERROR_LOG_INTERVAL = 60000; // Log same error max once per minute
+
 function log(level, message, data = null) {
     const timestamp = new Date().toISOString();
+    
+    // Rate limit ERROR logs to prevent spam
+    if (level === 'error' && message.includes('All live sources failed')) {
+        const now = Date.now();
+        if (now - lastErrorLogTime < ERROR_LOG_INTERVAL) {
+            // Skip logging if same error was logged recently
+            return;
+        }
+        lastErrorLogTime = now;
+    }
+    
     console.log(`[${timestamp}] [${level.toUpperCase()}] ${message}`, data ? JSON.stringify(data) : '');
 }
 
@@ -293,8 +308,14 @@ export async function getLotteryData(forceRefresh = false) {
         return await Promise.race([fetchPromise, hardTimeout]) as any;
 
     } catch (criticalError) {
-        log('error', `Data Fetch Failed: ${criticalError.message}. Serving STATIC FALLBACK.`);
-        // 3. ULTIMATE FALBACK
+        // Only log if it's not a normal fallback scenario
+        if (!criticalError.message.includes('All live sources failed') && !criticalError.message.includes('Global Timeout')) {
+            log('error', `Data Fetch Failed: ${criticalError.message}. Serving STATIC FALLBACK.`);
+        } else {
+            // This is expected - sources unavailable, using fallback (log once per minute max)
+            log('warn', `Live sources unavailable, serving cached/static data. This is normal.`);
+        }
+        // 3. ULTIMATE FALLBACK - Always return valid data
         return STATIC_FALLBACK_DATA;
     }
 }
