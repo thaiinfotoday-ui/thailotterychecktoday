@@ -253,20 +253,27 @@ export async function getLotteryData(forceRefresh = false) {
             }
 
             // 2. Fetch from External Sources (CRON or Fallback)
-            for (const source of SOURCES) {
-                try {
-                    const data = await fetchFromSource(source);
-                    await saveToDB(data); // Background save
-                    return {
-                        results: data.results,
-                        date: data.date,
-                        source: data.source
-                    };
-                } catch (e) {
-                    log('warn', `Source ${source.name} failed: ${e.message}`);
-                }
+            // Parallel fetch to beat the clock
+            try {
+                const data = await Promise.any(
+                    SOURCES.map(source =>
+                        fetchFromSource(source).then(async d => {
+                            // Fire and forget save (don't block return)
+                            saveToDB(d).catch(e => console.error("BG Save Error:", e));
+                            return d;
+                        })
+                    )
+                );
+
+                return {
+                    results: data.results,
+                    date: data.date,
+                    source: data.source
+                };
+            } catch (aggregateError) {
+                // All sources failed
+                throw new Error("All live sources failed");
             }
-            throw new Error("All live sources failed");
         })();
 
         // Hard Timeout Race
