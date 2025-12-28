@@ -28,21 +28,27 @@ const RETRY_DELAY_MS = 1000;
 
 // --- UTILITY FUNCTIONS ---
 
-// Rate-limited error logging to reduce noise
-let lastErrorLogTime = 0;
-const ERROR_LOG_INTERVAL = 60000; // Log same error max once per minute
+// Rate-limited logging to reduce noise
+let lastWarnLogTime = 0;
+const WARN_LOG_INTERVAL = 600000; // Log same warning max once per 10 minutes (expected behavior)
 
 function log(level, message, data = null) {
     const timestamp = new Date().toISOString();
     
-    // Rate limit ERROR logs to prevent spam
-    if (level === 'error' && message.includes('All live sources failed')) {
+    // Rate limit WARN logs for expected fallback scenarios
+    if (level === 'warn' && message.includes('Live sources unavailable')) {
         const now = Date.now();
-        if (now - lastErrorLogTime < ERROR_LOG_INTERVAL) {
-            // Skip logging if same error was logged recently
+        if (now - lastWarnLogTime < WARN_LOG_INTERVAL) {
+            // Skip logging if same warning was logged recently
             return;
         }
-        lastErrorLogTime = now;
+        lastWarnLogTime = now;
+    }
+    
+    // Only log important messages in production
+    if (process.env.NODE_ENV === 'production' && level === 'info' && message.includes('Fetching from')) {
+        // Skip verbose info logs in production
+        return;
     }
     
     console.log(`[${timestamp}] [${level.toUpperCase()}] ${message}`, data ? JSON.stringify(data) : '');
