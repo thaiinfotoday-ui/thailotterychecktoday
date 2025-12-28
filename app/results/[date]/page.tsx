@@ -1,52 +1,56 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Calendar, RefreshCw, Trophy, Hash, ArrowRight, ArrowLeft, Info, Home } from 'lucide-react';
-import { fetchMyanThaiResults } from '@/lib/myanthaiParser';
+import { getDrawByDate } from '@/lib/lotteryService';
 
-// Force dynamic rendering to ensure fresh fetch
-export const dynamic = 'force-dynamic';
+// ISR: Regenerate page every 1 hour
+export const revalidate = 3600;
 
-export async function generateMetadata({ params }) {
-    const { date } = params;
+export async function generateMetadata({ params }: { params: Promise<{ date: string }> }) {
+    const { date } = await params;
     return {
         title: `Thai Lottery Results – ${date}`,
         description: `Official Thai Lottery results for ${date}. Check winning numbers, first prize, and 3-digit prizes.`,
     };
 }
 
-export default async function ResultPage({ params }) {
-    const { date } = params;
-    let data;
-    let error = null;
+export default async function ResultPage({ params }: { params: Promise<{ date: string }> }) {
+    const { date } = await params;
 
-    try {
-        // We fetch directly from lib to avoid HTTP loop, effectively the same logic as the API
-        // Note: The assignment asked for API route construction, which exists at /api/results/fetch
-        // But for Server Components, calling the function directly is better practice/performance.
-        data = await fetchMyanThaiResults();
+    // Fetch safe data (Static First + DB/Live Fallback)
+    const data = await getDrawByDate(date);
 
-        // Simple check if fetched data matches requested date
-        // If the source only provides the LATEST, and the user requested an OLD date, 
-        // we might show a warning or redirect.
-        // For this implementation, we display the data and note the date.
-
-    } catch (e) {
-        error = e.message;
-    }
-
-    if (error) {
+    if (!data) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-slate-50">
                 <div className="text-center p-8">
-                    <h1 className="text-2xl font-bold text-slate-900 mb-4">Results Unavailable</h1>
-                    <p className="text-slate-500 mb-6">Could not fetch data for {date}</p>
-                    <Link href="/" className="text-primary hover:underline">Return Home</Link>
+                    <h1 className="text-2xl font-bold text-slate-900 mb-4">Results Pending or Unavailable</h1>
+                    <p className="text-slate-500 mb-6">We could not find the official results for {date} yet.</p>
+                    <Link href="/" className="px-6 py-2 bg-primary text-white rounded-full hover:bg-red-700 transition font-bold">
+                        Check Latest Results
+                    </Link>
                 </div>
             </div>
         );
     }
 
-    const { results } = data;
+    // If we got data, but the date doesn't match the requested URL (should be caught by getDrawByDate logic, but safety first)
+    // Actually getDrawByDate only returns if date matches. So we are good.
+
+    const { first: first_prize, last2: last_two, front3: front_three, back3: back_three } = data as any;
+    // Map data fields if names differ (getDrawByDate returns { first, last2, front3, back3 })
+    // Results page expects { results: { first_prize ... } } or we adapt below.
+    // The previous code destructured `const { results } = data;`.
+    // My new `getDrawByDate` returns flat object { date, first, last2... }.
+    // So I need to adapt the variables below.
+
+    // Create a 'results' object to match previous usage in JSX
+    const results = {
+        first_prize: data.first,
+        last_two: data.last2,
+        front_three: data.front3,
+        back_three: data.back3
+    };
 
     return (
         <div className="min-h-screen bg-slate-50 pb-20 font-sans text-slate-900">

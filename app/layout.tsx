@@ -4,10 +4,12 @@ import "./globals.css";
 import JsonLd from "./components/JsonLd";
 import { LanguageProvider } from "./context/LanguageContext";
 import ClientLayout from "./components/ClientLayout";
+import { Metadata } from 'next';
+import { ReactNode } from 'react';
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL("https://thailotterychecktoday.com"),
   title: "Thai Lottery Results 2025 - Latest Draw | Official Results",
   description: "Check the latest Thai Lottery results. Valid, safe, and fast server-side checking. Historical data, statistics, and number frequency analysis.",
@@ -45,13 +47,13 @@ export const metadata = {
   },
 };
 
-export default async function RootLayout({ children }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
   // Read language from headers (set by middleware)
   const headersList = await headers();
   const lang = headersList.get('x-next-locale') || 'en';
 
   return (
-    <html lang={lang}>
+    <html lang={lang} suppressHydrationWarning>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <JsonLd />
         <LanguageProvider initialLang={lang}>

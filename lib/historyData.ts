@@ -23,7 +23,7 @@ export async function getHistoryData(year = null, page = 1, skipLiveFetch = fals
                 setTimeout(() => reject(new Error('Timeout')), 1500)
             );
 
-            const liveData = await Promise.race([liveDataPromise, timeoutPromise]);
+            const liveData = await Promise.race([liveDataPromise, timeoutPromise]) as any;
 
             // If live data exists and valid
             if (liveData && liveData.date && liveData.results && liveData.results.first_prize !== 'xxxxxx') {

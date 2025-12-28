@@ -26,7 +26,7 @@ export const metadata = {
 };
 
 // ISR: Revalidate every 60 seconds (fresh on draw days)
-export const revalidate = 60;
+export const revalidate = 300;
 
 export default async function LatestDrawPage() {
     let data = null;

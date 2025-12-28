@@ -36,7 +36,7 @@ function getClient() {
 // Public read operations - Optimized for performance
 export async function getAllPosts() {
     const client = getClient();
-    
+
     // Only fetch published posts, limit fields, and add timeout
     const queryPromise = client
         .from('posts')
@@ -51,7 +51,7 @@ export async function getAllPosts() {
     );
 
     try {
-        const { data, error } = await Promise.race([queryPromise, timeoutPromise]);
+        const { data, error } = await Promise.race([queryPromise, timeoutPromise]) as any;
 
         if (error) {
             console.error('Error fetching posts:', error);

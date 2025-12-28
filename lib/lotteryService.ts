@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { createServerClient } from './supabase.js';
+import { createServerClient } from './supabase';
 
 const SOURCES = [
     {
@@ -134,8 +134,10 @@ async function fetchFromSource(source, retryCount = 0) {
         log('info', `Fetching from ${source.name}`, { url: source.url });
         const response = await fetchWithTimeout(source.url, {
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9,th;q=0.8',
+                'Referer': 'https://www.google.com/'
             }
         });
 
@@ -212,62 +214,104 @@ async function saveToDB(normalizedData) {
  * forceRefresh = true (Called by CRON): Fetch external -> Save DB -> Return
  * forceRefresh = false (Called by USER): Fetch DB -> Return. (Fallback to external only on empty DB)
  */
+// Import static fallback
+import { STATIC_FALLBACK_DATA } from './staticResult';
+
+/**
+ * Main Logic: Fail-Safe Data Fetching
+ * 1. Try DB/Cache (Fast)
+ * 2. Try Scrapers (Slow)
+ * 3. FALLBACK to Static Data (Instant)
+ * 
+ * GUARANTEE: Never throws an error. Always returns valid data.
+ */
 export async function getLotteryData(forceRefresh = false) {
+    const COMPONENT_TIMEOUT = 4000; // Max time before giving up on live data
 
-    // 1. If NOT forced (normal user), try DB first WITH TIMEOUT
     try {
-        if (!forceRefresh) {
-            // Race: DB vs 1-second timeout
-            const dbPromise = getLatestFromDB();
-            const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('DB Timeout')), 1000)
-            );
+        // Enforce a hard timeout on the entire operation
+        const fetchPromise = (async () => {
+            // 1. If NOT forced (normal user), try DB first
+            if (!forceRefresh) {
+                try {
+                    const dbPromise = getLatestFromDB();
+                    const timeoutPromise = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('DB Timeout')), 1500)
+                    );
+                    const dbData = await Promise.race([dbPromise, timeoutPromise]) as any;
 
-            const dbData = await Promise.race([dbPromise, timeoutPromise]);
-
-            if (dbData) {
-                log('info', 'Serving from DB (Fast Path)', { date: dbData.date });
-                return {
-                    results: dbData.results,
-                    date: dbData.date,
-                    source: dbData.source
-                };
+                    if (dbData) {
+                        return {
+                            results: dbData.results,
+                            date: dbData.date,
+                            source: dbData.source
+                        };
+                    }
+                } catch (dbError) {
+                    log('warn', 'DB Fetch rejected, proceeding to live source.');
+                }
             }
-            log('warn', 'DB empty or inaccessible. Falling back to live fetch.');
-        }
 
-        // 2. Fetch from sources (CRON or Fallback)
-        // Try all sources
-        for (const source of SOURCES) {
-            try {
-                const data = await fetchFromSource(source);
-
-                // Save to DB for future requests
-                await saveToDB(data);
-
-                return {
-                    results: data.results,
-                    date: data.date,
-                    source: data.source
-                };
-            } catch (e) {
-                log('warn', `Source ${source.name} failed: ${e.message}`);
+            // 2. Fetch from External Sources (CRON or Fallback)
+            for (const source of SOURCES) {
+                try {
+                    const data = await fetchFromSource(source);
+                    await saveToDB(data); // Background save
+                    return {
+                        results: data.results,
+                        date: data.date,
+                        source: data.source
+                    };
+                } catch (e) {
+                    log('warn', `Source ${source.name} failed: ${e.message}`);
+                }
             }
-        }
+            throw new Error("All live sources failed");
+        })();
+
+        // Hard Timeout Race
+        const hardTimeout = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Global Timeout')), COMPONENT_TIMEOUT)
+        );
+
+        return await Promise.race([fetchPromise, hardTimeout]) as any;
+
     } catch (criticalError) {
-        log('error', `CRITICAL FAILURE in getLotteryData: ${criticalError.message}`);
+        log('error', `Data Fetch Failed: ${criticalError.message}. Serving STATIC FALLBACK.`);
+        // 3. ULTIMATE FALBACK
+        return STATIC_FALLBACK_DATA;
     }
+}
 
-    // 3. Fallback: Return hardcoded recent data if everything fails
-    log('warn', 'All sources failed. Returning FAILSAFE data.');
-    return {
-        date: '2025-12-16',
-        source: 'System Archive',
-        results: {
-            first_prize: '763895',
-            last_two: '52',
-            front_three: ['431', '176'],
-            back_three: ['014', '449']
+// Import history data to check against static archives
+import { staticHistoryData } from './historyData';
+
+/**
+ * Safe method to get a specific draw by date.
+ * Checks:
+ * 1. Latest Live Data (DB/Cache)
+ * 2. Static History Archive
+ * 3. Fallback (if critical)
+ */
+export async function getDrawByDate(date: string) {
+    // 1. Check if it's the latest draw
+    try {
+        const latest = await getLotteryData(); // This is fast & fail-safe now
+        if (latest.date === date) {
+            return {
+                date: latest.date,
+                first: latest.results.first_prize,
+                last2: latest.results.last_two,
+                front3: latest.results.front_three,
+                back3: latest.results.back_three
+            };
         }
-    };
+    } catch (e) { /* ignore */ }
+
+    // 2. Check Static History
+    const historical = staticHistoryData.find(d => d.date === date);
+    if (historical) return historical;
+
+    // 3. Last Resort: Return null (Page will show "Result Pending" or 404 handled gracefully)
+    return null;
 }

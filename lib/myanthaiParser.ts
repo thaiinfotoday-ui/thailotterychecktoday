@@ -52,7 +52,8 @@ export async function fetchMyanThaiResults() {
         const allNumbers = [];
         $('*').each((i, el) => {
             // Avoid script tags and style tags
-            if (el.tagName === 'script' || el.tagName === 'style') return;
+            const tag = (el as any).tagName; // Cast to any to avoid type error
+            if (tag === 'script' || tag === 'style') return;
 
             // Get immediate text only
             const text = $(el).clone().children().remove().end().text().trim();

@@ -18,6 +18,7 @@ export default function sitemap() {
         '/about',
         '/faq',
         '/thai-lottery-draw-dates',
+        '/thai-lottery-statistics',
         '/win-rate',
         '/reality',
         '/how-3up-direct-and-set-works',

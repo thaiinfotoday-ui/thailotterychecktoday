@@ -38,7 +38,6 @@ export default function Footer() {
                                 { href: "/knowledge", label: "Wiki & Glossary" },
                                 { href: "/zodiac", label: "Zodiac Signs" },
                                 { href: "/sources", label: "Source Comparison" },
-                                { href: "/thai-lottery-statistics", label: "Statistical Analysis" },
                                 { href: "/win-rate", label: "Win Rate Calculator" },
                                 { href: "/reality", label: "Myths & Reality" },
                                 { href: "/thai-lottery-draw-dates", label: "Draw Schedule" },

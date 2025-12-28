@@ -4,8 +4,9 @@ import { getPostBySlug } from '@/lib/blogService';
 import BlockRenderer from '@/components/blog/BlockRenderer';
 import { ArrowLeft, Calendar, Share2 } from 'lucide-react';
 
-export async function generateMetadata({ params }) {
-    const post = await getPostBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = await getPostBySlug(slug);
     if (!post) return {};
 
     return {
@@ -17,8 +18,9 @@ export async function generateMetadata({ params }) {
     };
 }
 
-export default async function BlogPostPage({ params }) {
-    const post = await getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = await getPostBySlug(slug);
 
     if (!post) {
         notFound();

@@ -201,7 +201,6 @@ export const translations = {
             heroDesc: "ผลสลากกินแบ่งรัฐบาลแบบเรียลไทม์ รวดเร็ว แม่นยำ และเชื่อถือได้จากแหล่งข้อมูลโดยตรง",
             checkBtn: "ตรวจหวยงวดล่าสุด",
             howToBtn: "วิธีเล่น/กติกา",
-            howToBtn: "วิธีเล่น/กติกา",
             verified: "แหล่งข้อมูลยืนยันแล้ว"
         },
         homeContent: {
@@ -353,7 +352,7 @@ export const translations = {
 
 const LanguageContext = createContext({
     lang: 'en',
-    setLang: () => { },
+    setLang: (lang: string) => { },
     toggleLanguage: () => { },
     t: translations['en']
 });

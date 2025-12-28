@@ -3,7 +3,9 @@ import { getLotteryData } from '@/lib/lotteryService';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request) {
+import { NextRequest } from 'next/server';
+
+export async function GET(request: NextRequest) {
     try {
         // Simple security check (use environment variable in production)
         const authHeader = request.headers.get('authorization');
@@ -16,7 +18,7 @@ export async function GET(request) {
         // Force refresh the data
         const data = await getLotteryData(true);
 
-        console.log('[CRON] Success:', data.active_source);
+        console.log('[CRON] Success:', data.source);
 
         return NextResponse.json({
             success: true,

@@ -1,4 +1,4 @@
-export default function ArticleSchema({ title, description, datePublished, authorName = "Thai Lottery Analyst" }) {
+export default function ArticleSchema({ title, description, datePublished = new Date().toISOString(), authorName = "Thai Lottery Analyst" }) {
     const schema = {
         "@context": "https://schema.org",
         "@type": "Article",

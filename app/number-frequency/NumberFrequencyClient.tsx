@@ -7,14 +7,19 @@ import ArticleSchema from '../components/schema/ArticleSchema';
 import FAQAccordion from '../components/FAQAccordion';
 import FAQPageSchema from '../components/schema/FAQPageSchema';
 
-export default function NumberFrequencyClient({ initialData }) {
+// Define props type
+interface NumberFrequencyClientProps {
+    initialData: any[];
+}
+
+export default function NumberFrequencyClient({ initialData }: NumberFrequencyClientProps) {
     const { t } = useLanguage();
     const [searchNumber, setSearchNumber] = useState('');
     const [numberType, setNumberType] = useState('last2'); // last2, front3, back3, first6
 
     // Calculate frequency from history data
     const frequencyData = useMemo(() => {
-        const counts = {};
+        const counts: Record<string, number> = {};
 
         initialData.forEach(item => {
             // Last 2 digits

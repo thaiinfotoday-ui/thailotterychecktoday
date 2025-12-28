@@ -254,9 +254,9 @@ export default function CheckClient() {
                 </div>
 
                 <ToolSchema
-                    name="Thai Lottery Ticket Checker"
+                    toolName="Thai Lottery Ticket Checker"
                     description="Official online verification tool for Thai Government Lottery tickets. Check latest and historical results instantly."
-                    category="Utility"
+                    applicationCategory="Utility"
                 />
 
                 {/* FAQ Section */}

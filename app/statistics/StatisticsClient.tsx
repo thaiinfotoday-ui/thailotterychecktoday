@@ -3,18 +3,19 @@
 import { useMemo } from 'react';
 import { BarChart3, TrendingUp, Award, Info, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { StatsIllustration as AnalyticsIllustration } from '../components/Illustrations';
 
 export default function StatisticsClient({ initialData }) {
     const { t } = useLanguage();
 
     // Calculate all statistics
     const stats = useMemo(() => {
-        const last2Counts = {};
-        const front3Counts = {};
-        const back3Counts = {};
-        const firstLast2Counts = {};
-        const firstLast3Counts = {};
-        const years = new Set();
+        const last2Counts: Record<string, number> = {};
+        const front3Counts: Record<string, number> = {};
+        const back3Counts: Record<string, number> = {};
+        const firstLast2Counts: Record<string, number> = {};
+        const firstLast3Counts: Record<string, number> = {};
+        const years = new Set<string>();
 
         initialData.forEach(item => {
             // Extract year
@@ -53,7 +54,7 @@ export default function StatisticsClient({ initialData }) {
         });
 
         // Get top numbers
-        const getTopNumbers = (counts, limit = 10) => {
+        const getTopNumbers = (counts: Record<string, number>, limit = 10) => {
             return Object.entries(counts)
                 .map(([number, count]) => ({ number, count }))
                 .sort((a, b) => b.count - a.count)

@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@/lib/supabase';
 
-export async function POST(req) {
+import { NextRequest } from 'next/server';
+
+export async function POST(req: NextRequest) {
     try {
         const { username, password } = await req.json();
 
@@ -13,7 +15,7 @@ export async function POST(req) {
 
         // Debug Log (Server Side)
         console.log("Attempting login for:", username);
-        
+
         // Check environment variables (for debugging)
         const hasSupabaseUrl = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
         const hasSupabaseKey = !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -25,8 +27,8 @@ export async function POST(req) {
             supabase = createServerClient();
         } catch (clientError) {
             console.error("Failed to create Supabase client:", clientError.message);
-            return NextResponse.json({ 
-                error: 'Server configuration error. Please check environment variables.' 
+            return NextResponse.json({
+                error: 'Server configuration error. Please check environment variables.'
             }, { status: 500 });
         }
 
@@ -42,7 +44,7 @@ export async function POST(req) {
                 status: error.status,
                 code: error.code
             });
-            
+
             // Return user-friendly error messages
             let errorMessage = 'Invalid email or password';
             if (error.message.includes('Invalid login credentials')) {
@@ -52,9 +54,9 @@ export async function POST(req) {
             } else if (error.message) {
                 errorMessage = error.message;
             }
-            
-            return NextResponse.json({ 
-                error: errorMessage 
+
+            return NextResponse.json({
+                error: errorMessage
             }, { status: 401 });
         }
 
@@ -77,8 +79,8 @@ export async function POST(req) {
         return NextResponse.json({ error: 'Login succeeded but no session returned' }, { status: 500 });
     } catch (error) {
         console.error("Login Route Error:", error);
-        return NextResponse.json({ 
-            error: 'Internal Server Error: ' + error.message 
+        return NextResponse.json({
+            error: 'Internal Server Error: ' + error.message
         }, { status: 500 });
     }
 }

@@ -7,7 +7,19 @@ import CollectionSchema from '../components/schema/CollectionSchema';
 import FAQAccordion from '../components/FAQAccordion';
 import FAQPageSchema from '../components/schema/FAQPageSchema';
 
-export default function HistoryClient({ results, pagination, currentYear }) {
+// Define types for props
+interface HistoryClientProps {
+    results: any[];
+    pagination: {
+        current: number;
+        total: number;
+        hasPrev: boolean;
+        hasNext: boolean;
+    };
+    currentYear?: string;
+}
+
+export default function HistoryClient({ results, pagination, currentYear }: HistoryClientProps) {
     const { t } = useLanguage();
     const years = ['2025', '2024', '2023'];
 
@@ -16,7 +28,7 @@ export default function HistoryClient({ results, pagination, currentYear }) {
         if (!results || results.length === 0) return null;
 
         // 1. Most frequent Last 2 digits (2-digit prize) in this page's dataset
-        const last2Counts = {};
+        const last2Counts: Record<string, number> = {};
 
         results.forEach(r => {
             const num = r.last2;

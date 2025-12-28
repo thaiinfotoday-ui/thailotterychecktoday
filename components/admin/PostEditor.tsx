@@ -93,13 +93,12 @@ const ImageBlock = ({ block, updateBlock, index }) => {
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
-                className={`relative border-2 border-dashed rounded-lg transition-colors ${
-                    dragActive
-                        ? 'border-purple-500 bg-purple-50'
-                        : block.url
+                className={`relative border-2 border-dashed rounded-lg transition-colors ${dragActive
+                    ? 'border-purple-500 bg-purple-50'
+                    : block.url
                         ? 'border-slate-200'
                         : 'border-slate-300 bg-slate-50 hover:bg-slate-100'
-                }`}
+                    }`}
             >
                 {block.url ? (
                     <div className="relative group">
@@ -198,15 +197,15 @@ const RenderBlock = ({ block, updateBlock, removeBlock, moveBlock, addBlock, ind
         <div className="group relative bg-white border border-slate-200 rounded-lg p-4 mb-4 hover:border-purple-300 transition-colors ml-12">
             {/* Block Controls - Gutenberg Style */}
             <div className="absolute -left-12 top-0 flex flex-col items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button 
-                    onClick={() => moveBlock(index, -1)} 
-                    disabled={index === 0} 
+                <button
+                    onClick={() => moveBlock(index, -1)}
+                    disabled={index === 0}
                     className="p-1.5 hover:bg-slate-100 rounded text-slate-500 disabled:opacity-30 transition-colors"
                     title="Move up"
                 >
                     <ChevronUp className="w-4 h-4" />
                 </button>
-                <button 
+                <button
                     onClick={() => {
                         // Insert block above - show quick menu
                         const blockTypes = ['paragraph', 'heading', 'image', 'list', 'quote', 'code', 'separator'];
@@ -221,9 +220,9 @@ const RenderBlock = ({ block, updateBlock, removeBlock, moveBlock, addBlock, ind
                 >
                     <Plus className="w-4 h-4" />
                 </button>
-                <button 
-                    onClick={() => moveBlock(index, 1)} 
-                    disabled={index === total - 1} 
+                <button
+                    onClick={() => moveBlock(index, 1)}
+                    disabled={index === total - 1}
                     className="p-1.5 hover:bg-slate-100 rounded text-slate-500 disabled:opacity-30 transition-colors"
                     title="Move down"
                 >
@@ -231,12 +230,12 @@ const RenderBlock = ({ block, updateBlock, removeBlock, moveBlock, addBlock, ind
                 </button>
             </div>
             <div className="absolute right-2 top-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity bg-white shadow-sm border border-slate-100 rounded-md p-1">
-                <button 
+                <button
                     onClick={() => {
                         if (confirm('Remove this block?')) {
                             removeBlock(index);
                         }
-                    }} 
+                    }}
                     className="p-1.5 hover:bg-red-50 text-red-500 rounded transition-colors"
                     title="Remove block"
                 >
@@ -252,11 +251,10 @@ const RenderBlock = ({ block, updateBlock, removeBlock, moveBlock, addBlock, ind
                             <button
                                 key={tag}
                                 onClick={() => updateBlock(index, { ...block, level: tag })}
-                                className={`px-3 py-1.5 text-xs font-bold rounded transition-colors ${
-                                    block.level === tag 
-                                        ? 'bg-purple-600 text-white shadow-sm' 
-                                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                                }`}
+                                className={`px-3 py-1.5 text-xs font-bold rounded transition-colors ${block.level === tag
+                                    ? 'bg-purple-600 text-white shadow-sm'
+                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                    }`}
                             >
                                 {tag.toUpperCase()}
                             </button>
@@ -267,14 +265,13 @@ const RenderBlock = ({ block, updateBlock, removeBlock, moveBlock, addBlock, ind
                         value={block.content}
                         onChange={(e) => updateBlock(index, { ...block, content: e.target.value })}
                         placeholder={`Heading ${block.level?.replace('h', '') || '2'}...`}
-                        className={`w-full font-bold border-none focus:ring-0 placeholder:text-slate-300 p-0 ${
-                            block.level === 'h1' ? 'text-4xl' :
+                        className={`w-full font-bold border-none focus:ring-0 placeholder:text-slate-300 p-0 ${block.level === 'h1' ? 'text-4xl' :
                             block.level === 'h2' ? 'text-3xl' :
-                            block.level === 'h3' ? 'text-2xl' :
-                            block.level === 'h4' ? 'text-xl' :
-                            block.level === 'h5' ? 'text-lg' :
-                            'text-base'
-                        }`}
+                                block.level === 'h3' ? 'text-2xl' :
+                                    block.level === 'h4' ? 'text-xl' :
+                                        block.level === 'h5' ? 'text-lg' :
+                                            'text-base'
+                            }`}
                     />
                 </div>
             )}
@@ -339,7 +336,7 @@ const RenderBlock = ({ block, updateBlock, removeBlock, moveBlock, addBlock, ind
                         <span className="text-xs font-medium text-slate-500 uppercase">Code Block</span>
                         <button
                             onClick={() => {
-                                const textarea = document.querySelector(`textarea[data-code-index="${index}"]`);
+                                const textarea = document.querySelector(`textarea[data-code-index="${index}"]`) as HTMLTextAreaElement;
                                 if (textarea) {
                                     textarea.select();
                                     document.execCommand('copy');
@@ -378,7 +375,11 @@ const RenderBlock = ({ block, updateBlock, removeBlock, moveBlock, addBlock, ind
 
 // --- MAIN EDITOR ---
 
-export default function PostEditor({ slug }) {
+interface PostEditorProps {
+    slug?: string;
+}
+
+export default function PostEditor({ slug }: PostEditorProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(!!slug);
     const [saving, setSaving] = useState(false);
@@ -387,7 +388,7 @@ export default function PostEditor({ slug }) {
     const [saveMessage, setSaveMessage] = useState(null);
 
     // Post State
-    const [post, setPost] = useState({
+    const [post, setPost] = useState<any>({
         title: '',
         slug: '',
         status: 'draft',
@@ -440,7 +441,7 @@ export default function PostEditor({ slug }) {
             ...(type === 'code' && { content: '', language: 'text' }),
             ...(type === 'separator' && {}), // Separator has no content
         };
-        
+
         if (insertIndex !== null) {
             // Insert at specific index
             setPost(prev => {
@@ -539,11 +540,10 @@ export default function PostEditor({ slug }) {
         <div className="max-w-7xl mx-auto pb-20">
             {/* Save Message */}
             {saveMessage && (
-                <div className={`fixed top-20 right-4 z-50 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 ${
-                    saveMessage.type === 'success' 
-                        ? 'bg-green-500 text-white' 
-                        : 'bg-red-500 text-white'
-                }`}>
+                <div className={`fixed top-20 right-4 z-50 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 ${saveMessage.type === 'success'
+                    ? 'bg-green-500 text-white'
+                    : 'bg-red-500 text-white'
+                    }`}>
                     {saveMessage.type === 'success' ? (
                         <CheckCircle className="w-5 h-5" />
                     ) : (
@@ -629,16 +629,16 @@ export default function PostEditor({ slug }) {
                                 <span className="text-2xl">+</span>
                                 <span>Add Block</span>
                             </button>
-                            
+
                             {showBlockMenu && (
                                 <>
-                                    <div 
-                                        className="fixed inset-0 z-40" 
+                                    <div
+                                        className="fixed inset-0 z-40"
                                         onClick={() => setShowBlockMenu(false)}
                                     />
                                     <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl z-50 p-4">
                                         <div className="grid grid-cols-2 gap-3">
-                                            <button 
+                                            <button
                                                 onClick={() => { addBlock('paragraph'); setShowBlockMenu(false); }}
                                                 className="flex items-center gap-3 p-3 text-left border border-slate-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors group"
                                             >
@@ -650,8 +650,8 @@ export default function PostEditor({ slug }) {
                                                     <div className="text-xs text-slate-500">Start writing...</div>
                                                 </div>
                                             </button>
-                                            
-                                            <button 
+
+                                            <button
                                                 onClick={() => { addBlock('heading'); setShowBlockMenu(false); }}
                                                 className="flex items-center gap-3 p-3 text-left border border-slate-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors group"
                                             >
@@ -663,8 +663,8 @@ export default function PostEditor({ slug }) {
                                                     <div className="text-xs text-slate-500">H1 - H6</div>
                                                 </div>
                                             </button>
-                                            
-                                            <button 
+
+                                            <button
                                                 onClick={() => { addBlock('image'); setShowBlockMenu(false); }}
                                                 className="flex items-center gap-3 p-3 text-left border border-slate-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors group"
                                             >
@@ -676,8 +676,8 @@ export default function PostEditor({ slug }) {
                                                     <div className="text-xs text-slate-500">Upload or URL</div>
                                                 </div>
                                             </button>
-                                            
-                                            <button 
+
+                                            <button
                                                 onClick={() => { addBlock('list'); setShowBlockMenu(false); }}
                                                 className="flex items-center gap-3 p-3 text-left border border-slate-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors group"
                                             >
@@ -689,8 +689,8 @@ export default function PostEditor({ slug }) {
                                                     <div className="text-xs text-slate-500">Bullet or numbered</div>
                                                 </div>
                                             </button>
-                                            
-                                            <button 
+
+                                            <button
                                                 onClick={() => { addBlock('quote'); setShowBlockMenu(false); }}
                                                 className="flex items-center gap-3 p-3 text-left border border-slate-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors group"
                                             >
@@ -702,8 +702,8 @@ export default function PostEditor({ slug }) {
                                                     <div className="text-xs text-slate-500">Highlight text</div>
                                                 </div>
                                             </button>
-                                            
-                                            <button 
+
+                                            <button
                                                 onClick={() => { addBlock('code'); setShowBlockMenu(false); }}
                                                 className="flex items-center gap-3 p-3 text-left border border-slate-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors group"
                                             >
@@ -715,8 +715,8 @@ export default function PostEditor({ slug }) {
                                                     <div className="text-xs text-slate-500">Code snippet</div>
                                                 </div>
                                             </button>
-                                            
-                                            <button 
+
+                                            <button
                                                 onClick={() => { addBlock('separator'); setShowBlockMenu(false); }}
                                                 className="flex items-center gap-3 p-3 text-left border border-slate-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors group"
                                             >
