@@ -180,16 +180,18 @@ async function getLatestFromDB() {
             .from('lottery_results')
             .select('*')
             .order('date', { ascending: false })
-            .limit(1)
-            .single();
+            .limit(1);
 
         if (error) {
-            // It's normal to return null if table is empty or query fails
             log('warn', 'DB Fetch Error', error.message);
             return null;
         }
 
-        return data;
+        if (!data || data.length === 0) {
+            return null;
+        }
+
+        return data[0];
     } catch (e) {
         log('error', 'Supabase Client Error', e.message);
         return null;
