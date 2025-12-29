@@ -17,8 +17,9 @@ export function middleware(request: NextRequest) {
     }
 
     // 2. Language Handling (SEO Strategy)
-    // If URL starts with /th, explicitly set header for server to know.
-    if (pathname.startsWith('/th')) {
+    // If URL starts with /th/ or is exactly /th, explicitly set header for server to know.
+    // Use more specific pattern to avoid matching routes like /thai-lottery-*
+    if (pathname === '/th' || pathname.startsWith('/th/')) {
         // Rewrite /th/foo -> /foo (but keeping /th in browser URL)
         // We pass 'x-next-locale' header so layout.js knows to render Thai
         const newUrl = new URL(pathname.replace(/^\/th/, '') || '/', request.url);
