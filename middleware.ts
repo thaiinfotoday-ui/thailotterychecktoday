@@ -18,13 +18,18 @@ export function middleware(request: NextRequest) {
 
     // 2. Language Handling (SEO Strategy)
     // If URL starts with /th/ or is exactly /th, explicitly set header for server to know.
-    // Use more specific pattern to avoid matching routes like /thai-lottery-*
     if (pathname === '/th' || pathname.startsWith('/th/')) {
-        // Rewrite /th/foo -> /foo (but keeping /th in browser URL)
-        // We pass 'x-next-locale' header so layout.js knows to render Thai
         const newUrl = new URL(pathname.replace(/^\/th/, '') || '/', request.url);
         const response = NextResponse.rewrite(newUrl);
         response.headers.set('x-next-locale', 'th');
+        return response;
+    }
+
+    // Handle /en prefix similarly to avoid 404s if users navigate to it
+    if (pathname === '/en' || pathname.startsWith('/en/')) {
+        const newUrl = new URL(pathname.replace(/^\/en/, '') || '/', request.url);
+        const response = NextResponse.rewrite(newUrl);
+        response.headers.set('x-next-locale', 'en');
         return response;
     }
 

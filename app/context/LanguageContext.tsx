@@ -387,9 +387,10 @@ export function LanguageProvider({ children, initialLang = 'en' }) {
 
     // Helper to generate localized paths
     const getPath = (path: string) => {
-        if (lang === 'en') {
-            return `/en${path === '/' ? '' : path}`;
+        if (lang === 'th') {
+            return `/th${path === '/' ? '' : path}`;
         }
+        // Default to clean path for 'en' or others
         return path;
     };
 

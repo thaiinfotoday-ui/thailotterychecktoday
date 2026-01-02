@@ -2,32 +2,13 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import { useLanguage } from '../context/LanguageContext';
-import { usePathname, useRouter } from 'next/navigation';
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
-    const { t, lang, getPath } = useLanguage();
-    const pathname = usePathname();
-    const router = useRouter();
-
-    const handleLanguageSwitch = () => {
-        const newLang = lang === 'en' ? 'th' : 'en';
-        let newPath = pathname;
-
-        if (lang === 'en') {
-            // Switch to Thai: Remove /en prefix
-            newPath = pathname.replace(/^\/en/, '') || '/';
-        } else {
-            // Switch to English: Add /en prefix
-            // Handle root case separately to avoid //en
-            newPath = pathname === '/' ? '/en' : `/en${pathname}`;
-        }
-
-        router.push(newPath);
-    };
+    const { t, getPath } = useLanguage();
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
@@ -72,15 +53,6 @@ export default function Header() {
 
                 {/* Right: Actions */}
                 <div className="flex items-center gap-4">
-                    <button
-                        onClick={handleLanguageSwitch}
-                        className="flex items-center gap-2 px-3 py-1.5 hover:bg-slate-100 rounded-full transition-colors text-slate-600 hover:text-slate-900 border border-transparent hover:border-slate-200"
-                        aria-label="Switch Language"
-                    >
-                        <Globe className="w-4 h-4" />
-                        <span className="text-xs font-semibold w-5">{lang.toUpperCase()}</span>
-                    </button>
-
                     <div className="md:hidden">
                         <button
                             onClick={() => setIsOpen(!isOpen)}
