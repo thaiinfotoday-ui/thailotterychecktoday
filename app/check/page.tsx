@@ -1,12 +1,12 @@
 import CheckClient from './CheckClient';
 
 export const metadata = {
-    title: "Thai Lottery Check Tool - Verify Winning Numbers (All Prizes)",
-    description: "Official Thai Lottery inspection tool. Scan your 6-digit ticket against all prize categories including First Prize, 3-Up, and 2-Down. Instant verification.",
-    keywords: "check thai lottery, verify lottery ticket, lottery scanner tool, check winning number, glo result checker",
+    title: "ตรวจหวย - ตรวจสลากกินแบ่งรัฐบาล ตรวจหวยวันนี้ | Thai Lottery Check Tool",
+    description: "ตรวจหวย ตรวจสลากกินแบ่งรัฐบาล ตรวจหวยวันนี้ ตรวจสลากกินแบ่ง รางวัลที่1 Check Thai Lottery numbers instantly. Verify all prize categories including First Prize, 3-Up, and 2-Down.",
+    keywords: "ตรวจหวย, ตรวจสลากกินแบ่งรัฐบาล, ตรวจหวยวันนี้, ตรวจสลากกินแบ่ง, ตรวจหวยรัฐบาล, รางวัลที่1, check thai lottery, verify lottery ticket, lottery checker",
     openGraph: {
-        title: "Smart Thai Lottery Inspector Tool",
-        description: "Verify tickets against official GLO database.",
+        title: "ตรวจหวย - ตรวจสลากกินแบ่งรัฐบาล ตรวจหวยวันนี้",
+        description: "ตรวจหวย ตรวจสลากกินแบ่งรัฐบาล ตรวจหวยวันนี้ ตรวจสลากกินแบ่ง รวดเร็ว แม่นยำ",
         type: "website",
     },
     alternates: {

@@ -26,12 +26,37 @@ export default function sitemap() {
         '/contact',
         '/privacy',
         '/terms'
-    ].map((route) => ({
-        url: `${baseUrl}${route}`,
-        lastModified: currentDate,
-        changeFrequency: route === '/latest' ? 'hourly' : 'daily',
-        priority: route === '' ? 1.0 : route === '/latest' ? 0.9 : 0.8,
-    }));
+    ].flatMap((route) => {
+        // Thai URL (Default, Root)
+        const thaiUrl = {
+            url: `${baseUrl}${route}`,
+            lastModified: currentDate,
+            changeFrequency: route === '/latest' ? 'hourly' : 'daily',
+            priority: route === '' ? 1.0 : route === '/latest' ? 0.9 : 0.8,
+            alternates: {
+                languages: {
+                    en: `${baseUrl}/en${route}`,
+                    th: `${baseUrl}${route}`,
+                },
+            },
+        };
+
+        // English URL (/en prefix)
+        const englishUrl = {
+            url: `${baseUrl}/en${route}`,
+            lastModified: currentDate,
+            changeFrequency: route === '/latest' ? 'hourly' : 'daily',
+            priority: route === '' ? 1.0 : route === '/latest' ? 0.9 : 0.8,
+            alternates: {
+                languages: {
+                    en: `${baseUrl}/en${route}`,
+                    th: `${baseUrl}${route}`,
+                },
+            },
+        };
+
+        return [thaiUrl, englishUrl];
+    });
 
     return routes;
 }

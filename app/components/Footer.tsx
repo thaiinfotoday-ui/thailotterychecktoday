@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
-    const { t } = useLanguage();
+    const { t, getPath } = useLanguage();
 
     return (
         <footer className="w-full border-t border-slate-200 bg-white text-slate-500">
@@ -29,21 +29,21 @@ export default function Footer() {
                         <h3 className="text-slate-900 text-lg font-bold">{t.footer.quickLinks}</h3>
                         <ul className="space-y-2">
                             {[
-                                { href: "/about", label: "About Us" },
-                                { href: "/", label: t.nav.today },
-                                { href: "/history", label: t.footer.archive },
-                                { href: "/thai-lottery-statistics", label: t.footer.stats },
-                                { href: "/tips", label: "VIP Tips & Papers" },
-                                { href: "/live", label: "Live Watch" },
-                                { href: "/knowledge", label: "Wiki & Glossary" },
-                                { href: "/zodiac", label: "Zodiac Signs" },
-                                { href: "/sources", label: "Source Comparison" },
-                                { href: "/win-rate", label: "Win Rate Calculator" },
-                                { href: "/reality", label: "Myths & Reality" },
-                                { href: "/thai-lottery-draw-dates", label: "Draw Schedule" },
-                                { href: "/actions", label: "Action Guide" },
-                                { href: "/lexicon", label: "Phrase Taxonomies" },
-                                { href: "/how-to", label: t.footer.howTo },
+                                { href: getPath("/about"), label: "About Us" },
+                                { href: getPath("/"), label: t.nav.today },
+                                { href: getPath("/history"), label: t.footer.archive },
+                                { href: getPath("/thai-lottery-statistics"), label: t.footer.stats },
+                                { href: getPath("/tips"), label: "VIP Tips & Papers" },
+                                { href: getPath("/live"), label: "Live Watch" },
+                                { href: getPath("/knowledge"), label: "Wiki & Glossary" },
+                                { href: getPath("/zodiac"), label: "Zodiac Signs" },
+                                { href: getPath("/sources"), label: "Source Comparison" },
+                                { href: getPath("/win-rate"), label: "Win Rate Calculator" },
+                                { href: getPath("/reality"), label: "Myths & Reality" },
+                                { href: getPath("/thai-lottery-draw-dates"), label: "Draw Schedule" },
+                                { href: getPath("/actions"), label: "Action Guide" },
+                                { href: getPath("/lexicon"), label: "Phrase Taxonomies" },
+                                { href: getPath("/how-to"), label: t.footer.howTo },
                             ].map((link, i) => (
                                 <li key={i}>
                                     <Link href={link.href} className="text-sm text-slate-500 hover:text-primary transition-colors flex items-center gap-2 group font-medium">

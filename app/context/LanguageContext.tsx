@@ -354,7 +354,8 @@ const LanguageContext = createContext({
     lang: 'en',
     setLang: (lang: string) => { },
     toggleLanguage: () => { },
-    t: translations['en']
+    t: translations['en'],
+    getPath: (path: string) => path
 });
 
 export function LanguageProvider({ children, initialLang = 'en' }) {
@@ -384,8 +385,16 @@ export function LanguageProvider({ children, initialLang = 'en' }) {
 
     const t = translations[lang];
 
+    // Helper to generate localized paths
+    const getPath = (path: string) => {
+        if (lang === 'en') {
+            return `/en${path === '/' ? '' : path}`;
+        }
+        return path;
+    };
+
     return (
-        <LanguageContext.Provider value={{ lang, setLang, toggleLanguage, t }}>
+        <LanguageContext.Provider value={{ lang, setLang, toggleLanguage, t, getPath }}>
             {children}
         </LanguageContext.Provider>
     );

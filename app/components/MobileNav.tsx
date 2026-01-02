@@ -6,16 +6,16 @@ import { useLanguage } from '../context/LanguageContext';
 
 export default function MobileNav() {
     const pathname = usePathname();
-    const { t } = useLanguage();
+    const { t, getPath } = useLanguage();
 
     // Only show on smaller screens, sticky at bottom
     // We add pb-safe for iOS home indicator safety if needed
 
     const navItems = [
-        { href: '/', label: t.nav.today, icon: Home },
-        { href: '/check', label: t.nav.check, icon: Search },
-        { href: '/thai-lottery-draw-dates', label: "Schedule", icon: Clock },
-        { href: '/thai-lottery-statistics', label: "Stats", icon: BarChart2 },
+        { href: getPath('/'), label: t.nav.today, icon: Home },
+        { href: getPath('/check'), label: t.nav.check, icon: Search },
+        { href: getPath('/thai-lottery-draw-dates'), label: "Schedule", icon: Clock },
+        { href: getPath('/thai-lottery-statistics'), label: "Stats", icon: BarChart2 },
     ];
 
     return (

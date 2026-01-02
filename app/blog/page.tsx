@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/blogService';
 import { Calendar, User } from 'lucide-react';
+import { headers } from 'next/headers';
+import ClientLayout from '../components/ClientLayout';
+import { getTranslations } from '@/lib/translations';
 
 export const metadata = {
     title: "Thai Lottery Blog - Educational News & Guides",
@@ -14,7 +17,17 @@ export const metadata = {
 export const revalidate = 300;
 
 export default async function BlogIndexPage() {
-    // getAllPosts already filters for published only and limits to 50
+    const headersList = await headers();
+    const lang = (headersList.get('x-next-locale') || 'th') as 'th' | 'en';
+
+    // Helper to generate localized paths
+    const getPath = (path: string) => {
+        if (lang === 'en') {
+            return `/en${path === '/' ? '' : path}`;
+        }
+        return path;
+    };
+
     const publishedPosts = await getAllPosts();
 
     return (
@@ -25,11 +38,12 @@ export default async function BlogIndexPage() {
                         Educational Resources
                     </span>
                     <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-                        Thai Lottery Insights
+                        {lang === 'th' ? 'บทความน่ารู้' : 'Thai Lottery Insights'}
                     </h1>
                     <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                        Learn how the lottery works, understand number frequency, and read official updates.
-                        Purely informational. No predictions.
+                        {lang === 'th'
+                            ? 'เรียนรู้เรื่องราวน่าสนใจเกี่ยวกับสลากกินแบ่งรัฐบาล เคล็ดลับ และข่าวสารล่าสุด'
+                            : 'Learn how the lottery works, understand number frequency, and read official updates. Purely informational. No predictions.'}
                     </p>
                 </div>
             </section>
@@ -45,7 +59,7 @@ export default async function BlogIndexPage() {
                         {publishedPosts.map(post => (
                             <Link
                                 key={post.slug}
-                                href={`/blog/${post.slug}`}
+                                href={getPath(`/blog/${post.slug}`)}
                                 className="group bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                             >
                                 {/* Placeholder Image handling - in real app, use post.featuredImage */}

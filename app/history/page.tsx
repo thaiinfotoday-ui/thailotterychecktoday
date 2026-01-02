@@ -2,18 +2,18 @@ import { getHistoryData } from '@/lib/historyData';
 import HistoryClient from './HistoryClient';
 
 export const metadata = {
-    title: "Thai Lottery Results History - Past Draw Archive",
-    description: "Browse the complete history of Thai Lottery results. Filter by year and date to check past winning numbers.",
-    keywords: "thai lottery history, past lottery results, lottery archive, historical draws",
+    title: "ตรวจหวยย้อนหลัง - ผลสลากกินแบ่งรัฐบาลย้อนหลัง | Thai Lottery History",
+    description: "ตรวจหวยย้อนหลัง ผลสลากกินแบ่งรัฐบาลย้อนหลัง สถิติหวย หวยงวดที่แล้ว Browse complete Thai Lottery history, past results, and historical data. Filter by year and date.",
+    keywords: "ตรวจหวยย้อนหลัง, หวยย้อนหลัง, ผลสลากกินแบ่งรัฐบาลย้อนหลัง, สถิติหวยย้อนหลัง, หวยงวดที่แล้ว, สลากย้อนหลัง, thai lottery history, past lottery results, lottery archive",
     openGraph: {
-        title: "Thai Lottery Results History - Past Draw Archive",
-        description: "Complete archive of Thai Lottery historical results",
+        title: "ตรวจหวยย้อนหลัง - ผลสลากกินแบ่งรัฐบาลย้อนหลัง",
+        description: "ตรวจหวยย้อนหลัง ผลสลากกินแบ่งรัฐบาลย้อนหลัง สถิติหวย หวยงวดที่แล้ว ข้อมูลครบถ้วน",
         type: "website",
     },
     twitter: {
         card: "summary",
-        title: "Thai Lottery History",
-        description: "Browse past Thai Lottery results",
+        title: "ตรวจหวยย้อนหลัง - Thai Lottery History",
+        description: "ตรวจหวยย้อนหลัง ผลสลากกินแบ่งรัฐบาลย้อนหลัง สถิติหวย",
     },
     robots: {
         index: true,

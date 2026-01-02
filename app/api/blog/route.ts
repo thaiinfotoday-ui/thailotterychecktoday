@@ -1,24 +1,38 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { getAllPosts, savePost, deletePost } from '@/lib/blogService';
+import { getAllPosts, savePost, deletePost, getAdminPosts } from '@/lib/blogService';
 
 // Helper to verify authentication
 async function verifyAuth() {
     const cookieStore = await cookies();
     const token = cookieStore.get('admin_token');
-    
+
     if (!token || !token.value) {
         return null;
     }
-    
+
     return token.value;
 }
 
 export async function GET() {
+    console.log("=== API/BLOG GET called ===");
     try {
+        const accessToken = await verifyAuth();
+        console.log("Debug: accessToken present?", !!accessToken);
+
+        if (accessToken) {
+            console.log("Debug: Fetching Admin Posts (including drafts)");
+            const posts = await getAdminPosts(accessToken);
+            console.log(`Debug: Admin Fetch result: ${posts.length} posts`);
+            return NextResponse.json(posts);
+        }
+
+        console.log("Debug: Fetching Public Posts (published only)");
         const posts = await getAllPosts();
+        console.log(`Debug: Public Fetch result: ${posts.length} posts`);
         return NextResponse.json(posts);
     } catch (error) {
+        console.error("Debug: API/BLOG GET Error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

@@ -6,14 +6,41 @@ import BangkokWeeklyTips from './BangkokWeeklyTips';
 import OrganizationSchema from './schema/OrganizationSchema';
 import { Calendar, Award, ExternalLink, RefreshCw, ChevronRight, HelpCircle, ShieldCheck, Zap, History, Sparkles, AlertCircle } from 'lucide-react';
 import { HeroIllustration, SecureIllustration, StatsIllustration, WinnerIllustration } from './Illustrations';
+import { formatThaiDate, formatLotteryNumber, toThaiNumerals } from '@/lib/formatters';
 
 export default function HomeClient({ initialData, history, latestPosts }) {
-    const { t, lang } = useLanguage();
+    const { t, lang, getPath } = useLanguage();
 
-    const data = initialData || {
-        date: 'N/A',
-        source: 'Unavailable',
-        results: { first_prize: '------', last_two: '--', front_three: [], back_three: [] }
+    // Ensure data structure is always valid
+    const data = initialData && initialData.results ? initialData : {
+        date: initialData?.date || 'N/A',
+        source: initialData?.source || 'Unavailable',
+        results: initialData?.results || { first_prize: '------', last_two: '--', front_three: [], back_three: [] }
+    };
+
+    // TEMPORARY: Hardcoded PDF link as requested
+    const pdfUrl = 'https://api.glo.or.th/utility/file/download/f4575ff4-2286-4125-a9e8-9d9f99042049';
+
+    // Ensure results object has all required fields
+    if (!data.results) {
+        data.results = { first_prize: '------', last_two: '--', front_three: [], back_three: [] };
+    }
+    if (!Array.isArray(data.results.front_three)) {
+        data.results.front_three = [];
+    }
+    if (!Array.isArray(data.results.back_three)) {
+        data.results.back_three = [];
+    }
+
+    // Format date based on language
+    const formattedDate = data.date !== 'N/A'
+        ? formatThaiDate(data.date, lang as 'th' | 'en', 'short')
+        : (lang === 'th' ? 'ไม่ระบุ' : 'N/A');
+
+    // Format lottery numbers based on language
+    const formatNumber = (num: string) => {
+        if (!num || num === '------' || num === '--') return num;
+        return lang === 'th' ? formatLotteryNumber(num, 'th') : num;
     };
 
     return (
@@ -36,34 +63,67 @@ export default function HomeClient({ initialData, history, latestPosts }) {
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                                 </span>
-                                Official GLO Data Feed
+                                {lang === 'th' ? 'ข้อมูลอย่างเป็นทางการจาก สลากกินแบ่งรัฐบาล' : 'Official GLO Data Feed'}
                             </div>
 
                             <div>
                                 <h1 className="text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tight">
-                                    Thai Lottery Results <br />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary text-2xl md:text-4xl block mt-4 font-bold">
-                                        Provides Live Winning Numbers for {data.date !== 'N/A' ? data.date : "Today"}
-                                    </span>
+                                    {lang === 'th' ? (
+                                        <>
+                                            ตรวจหวย <br />
+                                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary text-2xl md:text-4xl block mt-4 font-bold">
+                                                ผลสลากกินแบ่งรัฐบาล {data.date !== 'N/A' ? formattedDate : 'งวดล่าสุด'}
+                                            </span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            Thai Lottery Results <br />
+                                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary text-2xl md:text-4xl block mt-4 font-bold">
+                                                Live Winning Numbers for {data.date !== 'N/A' ? formattedDate : "Latest Draw"}
+                                            </span>
+                                        </>
+                                    )}
                                 </h1>
                                 <p className="text-lg md:text-xl text-slate-600 max-w-lg leading-relaxed mt-6">
-                                    The <strong>Central Hub</strong> for checking official Government Lottery Office (GLO) results.
-                                    We deliver <strong>verified numerical data</strong>, historical archives, and statistical analysis tools.
+                                    {lang === 'th' ? (
+                                        <>
+                                            <strong>ศูนย์กลาง</strong>สำหรับตรวจสอบผลสลากกินแบ่งรัฐบาลอย่างเป็นทางการ
+                                            เราให้บริการ<strong>ข้อมูลที่ตรวจสอบแล้ว</strong> ประวัติย้อนหลัง และเครื่องมือวิเคราะห์สถิติ
+                                        </>
+                                    ) : (
+                                        <>
+                                            The <strong>Central Hub</strong> for checking official Government Lottery Office (GLO) results.
+                                            We deliver <strong>verified numerical data</strong>, historical archives, and statistical analysis tools.
+                                        </>
+                                    )}
                                 </p>
                             </div>
 
-                            <div className="flex flex-wrap gap-4">
-                                <Link href="/latest" className="px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-primary hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-xl shadow-red-200">
-                                    {t.home.checkBtn} <ChevronRight className="w-5 h-5" />
+                            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                                <Link href={getPath('/latest')} className="flex-1 sm:flex-none px-8 py-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white font-bold rounded-2xl hover:from-primary hover:to-red-700 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 shadow-xl shadow-red-200/50 whitespace-nowrap">
+                                    {lang === 'th' ? 'ตรวจหวยเลย' : 'Check Now'} <ChevronRight className="w-5 h-5" />
                                 </Link>
-                                <Link href="/how-to" className="px-8 py-4 bg-white border-2 border-slate-100 text-slate-700 font-bold rounded-2xl hover:border-red-200 hover:text-primary hover:bg-red-50 transition-all flex items-center gap-2">
-                                    {t.home.howToBtn}
-                                </Link>
+                                <a
+                                    href={pdfUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex-1 sm:flex-none px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 shadow-xl shadow-blue-200/50 whitespace-nowrap"
+                                >
+                                    <Award className="w-5 h-5" />
+                                    {lang === 'th' ? 'ใบตรวจหวย (PDF)' : 'Official PDF'}
+                                    <ExternalLink className="w-4 h-4" />
+                                </a>
                             </div>
 
                             <div className="flex items-center gap-6 text-sm font-semibold text-slate-400 pt-4">
-                                <span className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-green-500" /> Source: Government Lottery Office</span>
-                                <span className="flex items-center gap-2"><Zap className="w-4 h-4 text-amber-500" /> Update Frequency: Instant</span>
+                                <span className="flex items-center gap-2">
+                                    <ShieldCheck className="w-4 h-4 text-green-500" />
+                                    {lang === 'th' ? 'แหล่งที่มา: สำนักงานสลากกินแบ่งรัฐบาล' : 'Source: Government Lottery Office'}
+                                </span>
+                                <span className="flex items-center gap-2">
+                                    <Zap className="w-4 h-4 text-amber-500" />
+                                    {lang === 'th' ? 'อัปเดต: ทันที' : 'Update: Instant'}
+                                </span>
                             </div>
                         </div>
 
@@ -75,28 +135,32 @@ export default function HomeClient({ initialData, history, latestPosts }) {
                                 <div className="p-8 pb-4 text-center border-b border-slate-50 bg-gradient-to-b from-white to-slate-50/50">
                                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-sm font-semibold text-slate-600 mb-6 shadow-sm">
                                         <Calendar className="w-4 h-4 text-primary" />
-                                        Draw Date: {data.date}
+                                        {lang === 'th' ? 'งวดวันที่: ' : 'Draw Date: '}{formattedDate}
                                     </div>
                                     <div className="text-sm font-bold tracking-[0.2em] text-primary uppercase mb-3">
-                                        {t.home.firstPrize}
+                                        {lang === 'th' ? 'รางวัลที่ ๑' : t.home.firstPrize}
                                     </div>
                                     <div className="text-6xl md:text-7xl font-black text-slate-900 font-mono tracking-wider drop-shadow-sm">
-                                        {data.results.first_prize || '------'}
+                                        {formatNumber(data.results.first_prize || '------')}
                                     </div>
                                 </div>
 
                                 <div className="p-8 pt-6 grid gap-6 bg-slate-50/50">
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-center hover:shadow-md transition-shadow">
-                                            <span className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.home.front3}</span>
+                                            <span className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+                                                {lang === 'th' ? 'เลขหน้า ๓ ตัว' : t.home.front3}
+                                            </span>
                                             <div className="flex justify-center gap-2 flex-wrap font-mono font-bold text-slate-800 text-xl">
-                                                {data.results.front_three.length ? data.results.front_three.map(n => <span key={n} className="bg-slate-100 px-2 py-1 rounded-md">{n}</span>) : '-'}
+                                                {data.results.front_three.length ? data.results.front_three.map(n => <span key={n} className="bg-slate-100 px-2 py-1 rounded-md">{formatNumber(n)}</span>) : '-'}
                                             </div>
                                         </div>
                                         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-center hover:shadow-md transition-shadow">
-                                            <span className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.home.back3}</span>
+                                            <span className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+                                                {lang === 'th' ? 'เลขท้าย ๓ ตัว' : t.home.back3}
+                                            </span>
                                             <div className="flex justify-center gap-2 flex-wrap font-mono font-bold text-slate-800 text-xl">
-                                                {data.results.back_three.length ? data.results.back_three.map(n => <span key={n} className="bg-slate-100 px-2 py-1 rounded-md">{n}</span>) : '-'}
+                                                {data.results.back_three.length ? data.results.back_three.map(n => <span key={n} className="bg-slate-100 px-2 py-1 rounded-md">{formatNumber(n)}</span>) : '-'}
                                             </div>
                                         </div>
                                     </div>
@@ -105,13 +169,29 @@ export default function HomeClient({ initialData, history, latestPosts }) {
                                             <Award className="w-32 h-32 rotate-12" />
                                         </div>
                                         <div className="relative z-10">
-                                            <span className="block text-xs font-bold opacity-80 uppercase tracking-wider mb-1">{t.home.last2}</span>
-                                            <span className="text-[10px] font-medium bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">{t.home.popular}</span>
+                                            <span className="block text-xs font-bold opacity-80 uppercase tracking-wider mb-1">
+                                                {lang === 'th' ? 'เลขท้าย ๒ ตัว' : t.home.last2}
+                                            </span>
+                                            <span className="text-[10px] font-medium bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                                                {lang === 'th' ? 'รางวัลยอดนิยม' : t.home.popular}
+                                            </span>
                                         </div>
                                         <div className="text-6xl font-black font-mono tracking-tight relative z-10">
-                                            {data.results.last_two || '--'}
+                                            {formatNumber(data.results.last_two || '--')}
                                         </div>
                                     </div>
+
+                                    {/* Prize Check PDF Button */}
+                                    <a
+                                        href={pdfUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95"
+                                    >
+                                        <Award className="w-5 h-5" />
+                                        <span>{lang === 'th' ? 'ใบตรวจหวย (GLO)' : 'Official GLO PDF'}</span>
+                                        <ExternalLink className="w-4 h-4" />
+                                    </a>
                                 </div>
 
                                 <div className="px-6 py-3 bg-white border-t border-slate-100 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
@@ -169,10 +249,10 @@ export default function HomeClient({ initialData, history, latestPosts }) {
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {[
-                        { title: t.tools.checkTitle, desc: "Verify Thai Lottery tickets against the official GLO database.", href: "/check", icon: ExternalLink, color: "text-blue-500", bg: "bg-blue-50" },
-                        { title: t.tools.historyTitle, desc: "Browse the complete Thai Lottery historical archive.", href: "/history", icon: RefreshCw, color: "text-green-500", bg: "bg-green-50" },
-                        { title: t.tools.statsTitle, desc: "Analyze Thai Lottery number frequency and trends.", href: "/thai-lottery-statistics", icon: Award, color: "text-primary", bg: "bg-red-50" },
-                        { title: t.tools.howToTitle, desc: "Learn the rules and prize structure of Thai Lottery.", href: "/how-to", icon: HelpCircle, color: "text-orange-500", bg: "bg-orange-50" },
+                        { title: t.tools.checkTitle, desc: "Verify Thai Lottery tickets against the official GLO database.", href: getPath("/check"), icon: ExternalLink, color: "text-blue-500", bg: "bg-blue-50" },
+                        { title: t.tools.historyTitle, desc: "Browse the complete Thai Lottery historical archive.", href: getPath("/history"), icon: RefreshCw, color: "text-green-500", bg: "bg-green-50" },
+                        { title: t.tools.statsTitle, desc: "Analyze Thai Lottery number frequency and trends.", href: getPath("/thai-lottery-statistics"), icon: Award, color: "text-primary", bg: "bg-red-50" },
+                        { title: t.tools.howToTitle, desc: "Learn the rules and prize structure of Thai Lottery.", href: getPath("/how-to"), icon: HelpCircle, color: "text-orange-500", bg: "bg-orange-50" },
                     ].map((tool, i) => (
                         <Link key={i} href={tool.href} className="flex flex-col p-6 bg-white border border-slate-100 rounded-2xl hover:border-red-200 hover:shadow-lg transition-all group">
                             <div className={`w-12 h-12 rounded-xl ${tool.bg} ${tool.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
@@ -186,7 +266,7 @@ export default function HomeClient({ initialData, history, latestPosts }) {
 
                 {/* 3.1. Discovery & Insights (Semantic Cluster Links) */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-                    <Link href="/zodiac" className="flex items-center gap-3 p-4 bg-indigo-50 border border-indigo-100 rounded-2xl hover:bg-indigo-100 transition-colors group">
+                    <Link href={getPath('/zodiac')} className="flex items-center gap-3 p-4 bg-indigo-50 border border-indigo-100 rounded-2xl hover:bg-indigo-100 transition-colors group">
                         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-indigo-500 shadow-sm group-hover:scale-110 transition-transform">
                             <Sparkles className="w-5 h-5" />
                         </div>
@@ -195,7 +275,7 @@ export default function HomeClient({ initialData, history, latestPosts }) {
                             <p className="text-xs text-indigo-600">Lucky Number Correlation</p>
                         </div>
                     </Link>
-                    <Link href="/sources" className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-100 rounded-2xl hover:bg-amber-100 transition-colors group">
+                    <Link href={getPath('/sources')} className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-100 rounded-2xl hover:bg-amber-100 transition-colors group">
                         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-amber-500 shadow-sm group-hover:scale-110 transition-transform">
                             <Award className="w-5 h-5" />
                         </div>
@@ -204,7 +284,7 @@ export default function HomeClient({ initialData, history, latestPosts }) {
                             <p className="text-xs text-amber-600">Accuracy Metrics</p>
                         </div>
                     </Link>
-                    <Link href="/live" className="flex items-center gap-3 p-4 bg-red-50 border border-red-100 rounded-2xl hover:bg-red-100 transition-colors group">
+                    <Link href={getPath('/live')} className="flex items-center gap-3 p-4 bg-red-50 border border-red-100 rounded-2xl hover:bg-red-100 transition-colors group">
                         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-red-500 shadow-sm group-hover:scale-110 transition-transform">
                             <Zap className="w-5 h-5" />
                         </div>
@@ -272,7 +352,7 @@ export default function HomeClient({ initialData, history, latestPosts }) {
                                 Recent Draw Archive
                             </h2>
                         </div>
-                        <Link href="/history" className="text-sm font-semibold text-primary hover:underline">
+                        <Link href={getPath('/history')} className="text-sm font-semibold text-primary hover:underline">
                             View Full 10-Year History
                         </Link>
                     </div>
@@ -302,7 +382,7 @@ export default function HomeClient({ initialData, history, latestPosts }) {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <Link href={`/history/${row.date}`} className="text-sm font-medium text-slate-400 hover:text-primary transition-colors">
+                                            <Link href={getPath(`/history/${row.date}`)} className="text-sm font-medium text-slate-400 hover:text-primary transition-colors">
                                                 {t.table.fullResult}
                                             </Link>
                                         </td>
@@ -326,7 +406,7 @@ export default function HomeClient({ initialData, history, latestPosts }) {
                             <span className="w-1 h-8 bg-primary rounded-full"></span>
                             Latest News & Guides
                         </h2>
-                        <Link href="/blog" className="text-primary font-semibold text-sm hover:underline">
+                        <Link href={getPath('/blog')} className="text-primary font-semibold text-sm hover:underline">
                             Read Blog
                         </Link>
                     </div>
@@ -335,7 +415,7 @@ export default function HomeClient({ initialData, history, latestPosts }) {
                         {latestPosts.map((post) => (
                             <Link
                                 key={post.slug}
-                                href={`/blog/${post.slug}`}
+                                href={getPath(`/blog/${post.slug}`)}
                                 className="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all overflow-hidden flex flex-col"
                             >
                                 <div className="h-32 bg-slate-100 flex items-center justify-center text-slate-300">

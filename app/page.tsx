@@ -1,5 +1,4 @@
 import { getLotteryData } from '@/lib/lotteryService';
-import { getHistoryData } from '@/lib/historyData';
 import { getAllPosts } from '@/lib/blogService';
 import HomeClient from './components/HomeClient';
 import { STATIC_FALLBACK_DATA } from '@/lib/staticResult';
@@ -16,6 +15,36 @@ interface LotteryData {
     last_two: string;
     front_three: string[];
     back_three: string[];
+  };
+}
+
+export async function generateMetadata() {
+  // Fetch the actual lottery data to ensure title matches the displayed results
+  let dateString = '';
+
+  try {
+    const data = await getLotteryData();
+    if (data && data.date) {
+      // Assuming data.date is in YYYY-MM-DD format (e.g., "2025-12-16")
+      const [year, month, day] = data.date.split('-');
+      dateString = `${day}-${month}-${year}`; // Convert to DD-MM-YYYY
+    }
+  } catch (error) {
+    console.error('Metadata lottery fetch failed:', error);
+  }
+
+  // Fallback to today's date if fetch fails
+  if (!dateString) {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    dateString = `${day}-${month}-${year}`;
+  }
+
+  return {
+    title: `Thailand Lottery Result ${dateString} Win Thai Lottery Today`,
+    description: `Check latest Thailand Lottery Result for ${dateString}. Win Thai Lottery Today with live updates and accurate results.`,
   };
 }
 

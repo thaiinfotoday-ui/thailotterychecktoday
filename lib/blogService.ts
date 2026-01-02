@@ -76,6 +76,26 @@ export async function getPostBySlug(slug) {
     return normalizePost(data);
 }
 
+// Admin read operations (require access token)
+export async function getAdminPosts(accessToken) {
+    if (!accessToken) {
+        throw new Error('Authentication required to fetch all posts');
+    }
+
+    const authenticatedSupabase = createAuthenticatedClient(accessToken);
+
+    const { data, error } = await authenticatedSupabase
+        .from('posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('Error fetching admin posts:', error);
+        return [];
+    }
+    return (data || []).map(normalizePost);
+}
+
 // Authenticated write operations (require access token)
 export async function savePost(postData, accessToken) {
     if (!accessToken) {

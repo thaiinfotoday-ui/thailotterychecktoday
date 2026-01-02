@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Plus, Edit, Trash2, Search, Eye, FileText, CheckCircle, Clock } from 'lucide-react';
+import { Plus, Edit, Trash2, Search, Eye, FileText, CheckCircle, Clock, UploadCloud } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function BlogDashboard() {
     const [posts, setPosts] = useState([]);
@@ -24,6 +25,40 @@ export default function BlogDashboard() {
             console.error('Failed to fetch posts', error);
         } finally {
             setLoading(false);
+        }
+
+
+    };
+
+    // --- IMPORT FEATURE (AI AGENT ACTION) ---
+    const handleImportBlogs = async () => {
+        if (!confirm('Import 20 Strategic Blog Drafts? This will add them to your draft list.')) return;
+
+        try {
+            const res = await fetch('/api/blog/import-batch', { method: 'POST' });
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                let msg = `Batch Import Complete!`;
+                if (data.count > 0) msg += `\n✅ Imported: ${data.count}`;
+                if (data.skipped && data.skipped.length > 0) msg += `\n⏭️ Skipped (Already Exist): ${data.skipped.length}`;
+                if (data.errors && data.errors.length > 0) msg += `\n⚠️ Errors: ${data.errors.length}`;
+
+                alert(msg);
+                fetchPosts();
+            } else {
+                console.error("Import failed response:", data);
+                if (data.errors && data.errors.length > 0) {
+                    alert(`Import Failed with Errors:\n${data.errors.join('\n')}`);
+                } else if (data.error) {
+                    alert(`Import Failed: ${data.error}`);
+                } else {
+                    alert('Import Failed: Unknown server error (check console)');
+                }
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Network/Client Error: ' + e.message);
         }
     };
 
@@ -52,12 +87,21 @@ export default function BlogDashboard() {
                     <h1 className="text-2xl font-bold text-slate-900">Blog Posts</h1>
                     <p className="text-slate-500">Manage your educational content</p>
                 </div>
-                <Link
-                    href="/admin/blog/new"
-                    className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-red-700 font-medium transition-colors"
-                >
-                    <Plus className="w-4 h-4" /> Create New Post
-                </Link>
+
+                <div className="flex gap-2">
+                    <button
+                        onClick={handleImportBlogs}
+                        className="flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 font-medium transition-colors"
+                    >
+                        <UploadCloud className="w-4 h-4" /> Import AI Drafts
+                    </button>
+                    <Link
+                        href="/admin/blog/new"
+                        className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-red-700 font-medium transition-colors"
+                    >
+                        <Plus className="w-4 h-4" /> Create New Post
+                    </Link>
+                </div>
             </div>
 
             {/* Filters */}
@@ -146,6 +190,6 @@ export default function BlogDashboard() {
                     </table>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

@@ -2,12 +2,12 @@ import { getHistoryData } from '@/lib/historyData';
 import StatisticsClient from './StatisticsClient';
 
 export const metadata = {
-    title: "Thai Lottery Statistics & Analysis 2025 | Past Results Patterns",
-    description: "In-depth statistical analysis of Thai Lottery results. View frequency of numbers, patterns, and historical data trends.",
-    keywords: "thai lottery statistics, numbers frequency, lottery analysis, past results patterns",
+    title: "สถิติหวย - วิเคราะห์หวย สถิติหวยย้อนหลัง | Thai Lottery Statistics 2025",
+    description: "สถิติหวย วิเคราะห์หวย สถิติหวยย้อนหลัง เลขที่ออก หวยชัวร์ 100 In-depth statistical analysis of Thai Lottery results, number frequency, patterns, and trends.",
+    keywords: "สถิติหวย, วิเคราะห์หวย, สถิติหวยย้อนหลัง, สถิติหวยรัฐย้อนหลัง, เลขที่ออก, หวยชัวร์ 100, thai lottery statistics, numbers frequency, lottery analysis",
     openGraph: {
-        title: "Thai Lottery Statistics & Analysis",
-        description: "Analyze historical Thai Lottery results and number patterns.",
+        title: "สถิติหวย - วิเคราะห์หวย สถิติหวยย้อนหลัง",
+        description: "สถิติหวย วิเคราะห์หวย สถิติหวยย้อนหลัง เลขที่ออก วิเคราะห์เลขเด็ด",
         type: "website",
     },
     robots: {

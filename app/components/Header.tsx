@@ -5,22 +5,42 @@ import { useState } from 'react';
 import { Menu, X, Globe } from 'lucide-react';
 import Image from 'next/image';
 import { useLanguage } from '../context/LanguageContext';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
-    const { t, toggleLanguage, lang } = useLanguage();
+    const { t, lang, getPath } = useLanguage();
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const handleLanguageSwitch = () => {
+        const newLang = lang === 'en' ? 'th' : 'en';
+        let newPath = pathname;
+
+        if (lang === 'en') {
+            // Switch to Thai: Remove /en prefix
+            newPath = pathname.replace(/^\/en/, '') || '/';
+        } else {
+            // Switch to English: Add /en prefix
+            // Handle root case separately to avoid //en
+            newPath = pathname === '/' ? '/en' : `/en${pathname}`;
+        }
+
+        router.push(newPath);
+    };
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 {/* Left: Logo */}
                 <div className="flex items-center gap-2">
-                    <Link href="/" className="flex items-center gap-2">
-                        <div className="relative w-10 h-10">
+                    <Link href={getPath('/')} className="flex items-center gap-2">
+                        <div className="relative w-14 h-14 sm:w-16 sm:h-16">
                             <Image
                                 src="/logo.jpg"
                                 alt="Thai Lottery Check"
                                 fill
+                                sizes="(max-width: 640px) 56px, 64px"
                                 className="object-contain"
                                 priority
                             />
@@ -33,19 +53,19 @@ export default function Header() {
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8">
-                    <Link href="/" className="text-sm font-medium text-slate-900 hover:text-primary transition-colors">
+                    <Link href={getPath('/')} className="text-sm font-medium text-slate-900 hover:text-primary transition-colors">
                         {t.nav.today}
                     </Link>
-                    <Link href="/latest" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
+                    <Link href={getPath('/latest')} className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                         {t.nav.latest}
                     </Link>
-                    <Link href="/history" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
+                    <Link href={getPath('/history')} className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                         {t.nav.history}
                     </Link>
-                    <Link href="/check" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
+                    <Link href={getPath('/check')} className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                         {t.nav.check}
                     </Link>
-                    <Link href="/tips" className="text-sm font-bold text-primary hover:text-red-700 transition-colors bg-red-50 px-3 py-1 rounded-full">
+                    <Link href={getPath('/tips')} className="text-sm font-bold text-primary hover:text-red-700 transition-colors bg-red-50 px-3 py-1 rounded-full">
                         VIP Tips
                     </Link>
                 </nav>
@@ -53,7 +73,7 @@ export default function Header() {
                 {/* Right: Actions */}
                 <div className="flex items-center gap-4">
                     <button
-                        onClick={toggleLanguage}
+                        onClick={handleLanguageSwitch}
                         className="flex items-center gap-2 px-3 py-1.5 hover:bg-slate-100 rounded-full transition-colors text-slate-600 hover:text-slate-900 border border-transparent hover:border-slate-200"
                         aria-label="Switch Language"
                     >
@@ -77,28 +97,28 @@ export default function Header() {
                 <div className="md:hidden border-t border-slate-200 bg-white transition-all">
                     <div className="container mx-auto px-4 py-4 flex flex-col gap-4 shadow-xl">
                         <Link
-                            href="/"
+                            href={getPath('/')}
                             className="text-primary font-semibold py-2 px-4 bg-red-50 rounded-lg border border-red-100"
                             onClick={() => setIsOpen(false)}
                         >
                             {t.nav.today}
                         </Link>
                         <Link
-                            href="/latest"
+                            href={getPath('/latest')}
                             className="text-slate-600 font-medium py-2 px-4 hover:bg-slate-50 rounded-lg"
                             onClick={() => setIsOpen(false)}
                         >
                             {t.nav.latest}
                         </Link>
                         <Link
-                            href="/history"
+                            href={getPath('/history')}
                             className="text-slate-600 font-medium py-2 px-4 hover:bg-slate-50 rounded-lg"
                             onClick={() => setIsOpen(false)}
                         >
                             {t.nav.history}
                         </Link>
                         <Link
-                            href="/check"
+                            href={getPath('/check')}
                             className="text-slate-600 font-medium py-2 px-4 hover:bg-slate-50 rounded-lg"
                             onClick={() => setIsOpen(false)}
                         >
